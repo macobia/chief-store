@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import authRoutes from "./routes/auth.route.js";
 import productRoutes from "./routes/product.route.js";
@@ -23,6 +24,16 @@ app.use(cors({
   }));
 // app.use(cors())
 const port = process.env.PORT || 3000
+const __dirname = path.resolve(); // Get the current directory path as an absolute path 
+
+// serve frontend
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+	});
+}
 
 // app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

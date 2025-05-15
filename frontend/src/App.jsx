@@ -8,6 +8,9 @@ import { useUserStore } from './stores/useUserStore';
 import React, { Suspense, useEffect } from 'react'
 import LoadingSpinner from './components/LoadingSpinner.jsx'
 import { useCartStore } from './stores/useCartStore.js';
+import PurchaseSuccessPage from "./pages/PurchaseSuccessPage";
+
+
 // import ResetPassPage from './pages/ResetPassPage.jsx'
 // import useTokenStore from './stores/useTokenStore.js'
 // import CategoryPage from './pages/CategoryPage.jsx';
@@ -70,6 +73,10 @@ function App() {
       
       <Route path='/category/:category'  element={<CategoryPage />}/>
       <Route path='/cart' element={user ? <CartPage /> : <Navigate to='/login' />} />
+      <Route path='/purchase-success'	element={user ? <PurchaseSuccessPage /> : <Navigate to='/login' />}
+	/>
+		 
+		
 
       <Route path='/forgot-password'  element={ <ForgotPassPage />}/>
       <Route path='/reset-password/:token'   element={!user ? <ResetPassPage /> : <Navigate to="/" replace />}/>

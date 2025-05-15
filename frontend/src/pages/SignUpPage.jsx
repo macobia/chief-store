@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { UserPlus, Mail, Lock, User, ArrowRight, Loader } from "lucide-react";  //used for generating icons
 import { motion} from "framer-motion";    //used for animation
-import useUserStore from '../stores/useUserStore';     //used for storing user data and Zutand is used for state management instead of redux
+import {useUserStore} from '../stores/useUserStore';     //used for storing user data and Zutand is used for state management instead of redux
 
 const SignUpPage = () => {
   
