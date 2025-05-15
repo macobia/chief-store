@@ -1,5 +1,5 @@
 import React from 'react'
-
+// eslint-disable-next-line
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "../lib/axios";
@@ -104,7 +104,7 @@ const AnalyticsTab = () => {
 	);
 };
 export default AnalyticsTab;
-
+// eslint-disable-next-line
 const AnalyticsCard = ({ title, value, icon: Icon, color }) => (
 	<motion.div
 		className={`bg-gray-800 rounded-lg p-6 shadow-lg overflow-hidden relative ${color}`}

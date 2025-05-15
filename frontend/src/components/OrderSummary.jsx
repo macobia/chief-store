@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line
 import { motion } from 'framer-motion';
 import { useCartStore } from '../stores/useCartStore';
 import { Link } from 'react-router-dom';
@@ -48,7 +49,7 @@ const OrderSummary = () => {
             couponCode: coupon ? coupon.code : null,
           });
     
-          const {  tx_ref, redirect_url, logo, flutterwavePublicKey, totalAmount } = res.data;
+          const {  tx_ref, redirect_url, flutterwavePublicKey, totalAmount } = res.data;
 		  const productMeta = cart.map((p) => ({
 			id: p._id,
 			quantity: p.quantity,

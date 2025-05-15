@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+// eslint-disable-next-line
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useCartStore } from "../stores/useCartStore";
@@ -12,11 +13,11 @@ const GiftCouponCard = () => {
     }, [getMyCoupon]);
 
     useEffect(() => {
-        if (coupon) setUserInputCode(coupon.code);
+        if (coupon) {setUserInputCode(coupon.code);}
     }, [coupon]);
 
     const handleApplyCoupon = () => {
-        if (!userInputCode) return;
+        if (!userInputCode){ return;}
         applyCoupon(userInputCode);
     };
 

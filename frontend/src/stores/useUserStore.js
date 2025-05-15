@@ -73,13 +73,14 @@ export const useUserStore = create((set, get) => ({
             set({user:res.data, checkingAuth: false});
              
         } catch (error) {
+            console.error(error);
             set({checkingAuth: false, user: null});
             // toast.error( error.response.data.message || "An error occurred during logout");
         }
     },
     refreshToken: async () => {
 		// Prevent multiple simultaneous refresh attempts
-		if (get().checkingAuth) return;
+		if (get().checkingAuth){ return; }
 
 		set({ checkingAuth: true });
 		try {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BarChart, PlusCircleIcon, ShoppingBasket, } from "lucide-react";
+// eslint-disable-next-line
 import { motion } from 'framer-motion';
 
 import AnalyticsTab from "../components/AnalyticsTab";

@@ -11,10 +11,10 @@ const FeaturedProducts = ({ featuredProducts }) => {
 
 	useEffect(() => {
 		const handleResize = () => {
-			if (window.innerWidth < 640) setItemsPerPage(1);
-			else if (window.innerWidth < 1024) setItemsPerPage(2);
-			else if (window.innerWidth < 1280) setItemsPerPage(3);
-			else setItemsPerPage(4);
+			if (window.innerWidth < 640) {setItemsPerPage(1);}
+			else if (window.innerWidth < 1024) {setItemsPerPage(2);}
+			else if (window.innerWidth < 1280) {setItemsPerPage(3);}
+			else {setItemsPerPage(4)}
 		};
 
 		handleResize();
@@ -56,7 +56,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
 										<div className='p-4'>
 											<h3 className='text-lg font-semibold mb-2 text-white'>{product.name}</h3>
 											<p className='text-emerald-300 font-medium mb-4'>
-												${product.price.toFixed(2)}
+												N{product.price.toFixed(2)}
 											</p>
 											<button
 												onClick={() => addToCart(product)}

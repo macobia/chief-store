@@ -24,7 +24,7 @@ const PeopleAlsoBought = () => {
 		fetchRecommendations();
 	}, []);
 
-	if (isLoading) return <LoadingSpinner />;
+	if (isLoading) {return <LoadingSpinner />;}
 
 	return (
 		<div className='mt-8'>
