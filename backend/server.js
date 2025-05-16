@@ -45,10 +45,8 @@ app.use("/api/analytics", analyticsRoutes);
 // if (process.env.NODE_ENV === "production") {
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
-	app.get("/*", (req, res) => {
-    const filePath = path.resolve(__dirname, "frontend", "dist", "index.html");
-    console.log(`Serving: ${filePath}`);
-    res.sendFile(filePath);
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
 	});
 
 // }
