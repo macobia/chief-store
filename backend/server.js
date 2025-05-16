@@ -43,7 +43,7 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-if (process.env.NODE_ENV === "production") {
+// if (process.env.NODE_ENV === "production") {
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 	app.get("*", (req, res) => {
@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, "/frontend/dist")));
     console.log("Index.html exists?", fs.existsSync(indexPath));
 	});
 
-}
+// }
 
 app.listen(port, () => {
     console.log("server is running on http://localhost:" + port);
