@@ -61,7 +61,7 @@ console.log("Converted to number:", Number(transaction_id));
       
   
       // Verify transaction with Flutterwave
-      const verifyResponse = await flw.Transaction.verify({ tx_ref: transaction_id  });
+      const verifyResponse = await flw.Transaction.verify({ id: 17473895446156 });
       // const verifyResponse = await flw.Transaction.verify({ id: 174728532086909275602 });
       console.log("Verify Response:", verifyResponse);
   
