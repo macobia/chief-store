@@ -14,12 +14,12 @@ export const getCoupon = async (req, res) => {
 export const validateCoupon = async (req, res) => {
     try {
         const {code} = req.body;
-        const coupon = await Coupon.findOne({ code: code, userId:req.user_id, isActive: true });
+        const coupon = await Coupon.findOne({ code: code, userId:req.user, isActive: true });
 
         if(!coupon) {
-            res.status(404).json({error: {message: "Coupon not found"}})
+            return res.status(404).json({error: {message: "Coupon not found"}})
         }
-        if (coupon.expirationDate < Date.now) {
+        if (coupon.expirationDate < Date.now()) {
             coupon.isActive = false;
             await coupon.save();
             return res.status(400).json({error: {message: "Coupon has expired"}})

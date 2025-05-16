@@ -30,11 +30,11 @@ const OrderSummary = () => {
 
 	const handleChange = (e) => {
 		setBillingInfo({ ...billingInfo, [e.target.name]: e.target.value });
-		console.log(user.email)
+		
 	};
 
 	const handleProceed = () => {
-		console.log(user.name)
+	
 		
 		setShowModal(true); // Show billing address modal
 	};

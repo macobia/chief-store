@@ -227,8 +227,7 @@ const sendOrderConfirmationEmail = async ({
 
     <p style="font-size: 14px;">Need help? Contact us at <a href="mailto:support@chief-store.com" style="color: #1e88e5;">support@chief-store.com</a></p>
     <p style="font-size: 13px; color: #888;">Chief-Store | Powered by Flutterwave</p>
-  </div>
-`;
+  </div>`;
 
 
    await transport.sendMail({
