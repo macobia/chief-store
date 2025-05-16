@@ -49,9 +49,9 @@ app.use(express.static(path.join(__dirname, "/frontend/dist")));
 	app.get("*", (req, res) => {
 		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
     console.log("Index.html exists?", fs.existsSync(indexPath));
-	// });
+	});
 
-}
+// }
 
 app.listen(port, () => {
     console.log("server is running on http://localhost:" + port);
