@@ -431,7 +431,7 @@
 //     connectDB()
 // } )
 
-const startDate = new Date();
+const startDate = Math.random(new Date());
 console.log(startDate);
 
 
@@ -442,3 +442,17 @@ console.log(startDate1);
 const startDate11 = Date();
 console.log(startDate11);
 
+const input = "ravesb_63eb1872885e6500d017_cmacobia@gmail.com";
+
+// Step 1: Split the string by underscore _
+const parts = input.split("_");
+
+// Step 2: Get the part after the second underscore
+const target = parts[2]; // 'cmacobia@gmail.com'
+
+// Step 3 (Optional): Convert to array of letters, sort, and print
+const letters = target.split(""); // split into individual characters
+const sortedLetters = letters.sort();
+
+console.log("After second underscore:", target);
+console.log("Sorted letters:", sortedLetters);

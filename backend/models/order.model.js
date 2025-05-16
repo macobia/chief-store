@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Number,
         ref: "User",
         required: true,
     }, 
@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema({
     },
     flutterwaveSessionId:{
         type: String,
-        unique: true,
+        // unique: true,
     },
     // OpaySessionId:{
     //     type: String,

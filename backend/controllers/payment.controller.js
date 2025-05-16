@@ -10,7 +10,7 @@ dotenv.config();
 
 export const createCheckoutSession = async (req, res) => {
     try {
-        const {products, couponCode} = req.body;
+        const {products, couponCode, billingInfo} = req.body;
         if (!Array.isArray(products) || products.length === 0) {
             return res.status(400).json({error: "Invalid or empty products array"})
         }
@@ -31,10 +31,20 @@ export const createCheckoutSession = async (req, res) => {
         }
 
         const tx_ref = `${Date.now()}${Math.floor(Math.random()* 10)}`;
-        const  redirect_url =  `${process.env.CLIENT_URL}/purchase-success?transaction_id=${tx_ref}`;
+      //   const  redirect_url =  `${process.env.CLIENT_URL}/purchase-success? billingInfo.street=${billingInfo.street}$
+      // billingInfo.city=${billingInfo.city}&billingInfo.state=${billingInfo.state}&billingInfo.country= ${billingInfo.country}&billingInfo.postal_code= ${billingInfo.postal_code}`;
+      const redirect_url = `${process.env.CLIENT_URL}/purchase-success?` +
+        `street=${encodeURIComponent( billingInfo.street)}&` +
+        `city=${encodeURIComponent(billingInfo.city)}&` +
+        `state=${encodeURIComponent(billingInfo.state)}&` +
+       `country=${encodeURIComponent(billingInfo.country)}&` +
+       `postal_code=${encodeURIComponent(billingInfo.postal_code)}`;
+
+        //transaction_id=${tx_ref}
         const logo = 'vite.svg';
         const flutterwavePublicKey = process.env.FLW_PUBLIC_KEY;
-        if (totalAmount >= 2000) {
+
+        if (totalAmount >= 200) {
             await createNewCoupon(req.user._id)
         }
         res.status(200).json({ tx_ref, totalAmount, redirect_url,logo, flutterwavePublicKey });
@@ -45,25 +55,26 @@ export const createCheckoutSession = async (req, res) => {
 }
 
 export const checkOutSuccess = async (req, res) => {
-    try {
-      const { transaction_id } = req.body;
+  try {
+      const { transaction_id, street, city, state, country, postal_code } = req.body;
   
       if (!transaction_id) {
         return res.status(400).json({ message: "Transaction ID is required." });
       }
 
-// console.log("Received transaction_id:", transaction_id);
+  // console.log("Received transaction_id:", transaction_id);
 
-// const transactionId = extractTransactionId(transaction_id);
-console.log("Received transaction_id:", transaction_id);
-console.log("Type of transaction_id:", typeof transaction_id);
-console.log("Converted to number:", Number(transaction_id));
+  // const transactionId = extractTransactionId(transaction_id);
+  // console.log("Received transaction_id:", transaction_id);
+  // console.log("Type of transaction_id:", typeof transaction_id);
+  // console.log("Converted to number:", Number(transaction_id));
       
   
       // Verify transaction with Flutterwave
-      const verifyResponse = await flw.Transaction.verify({ id: 17473895446156 });
+      const verifyResponse = await flw.Transaction.verify({ id: transaction_id });
       // const verifyResponse = await flw.Transaction.verify({ id: 174728532086909275602 });
-      console.log("Verify Response:", verifyResponse);
+      // console.log("Verify Response:", verifyResponse);
+      // console.log("meta data:", verifyResponse.customizations)
   
       const isTransactionSuccessful =
         verifyResponse.status === "success" &&
@@ -88,27 +99,43 @@ console.log("Converted to number:", Number(transaction_id));
       const products = JSON.parse(meta.products || "[]");
   
       const newOrder = new Order({
-        user: meta.userId,
+        user: customer.id,
         products: products.map((product) => ({
           product: product.id,
           quantity: product.quantity,
           price: product.price,
         })),
         totalAmount: amount,
-        flutterwaveSessionId: 12234, // using Flutterwave's transaction ID
+        flutterwaveSessionId: transaction_id + Math.random(), // using Flutterwave's transaction ID
       });
   
       await newOrder.save();
+
+      const input = customer.email;
+
+      // Step 1: Split the string by underscore _
+      const parts = input.split("_");
+      // Step 2: Get the part after the second underscore
+      const email = parts[2];
+
+
+
   
       //  Send confirmation email
       await sendOrderConfirmationEmail({
-        email: customer.email,
+       
+       
         name: customer.name,
         tx_ref,
         amount,
-        billingInfo: meta.shipping_address,
+        street,
+				city,
+				state,
+				country,
+				postal_code,
         products,
         couponCode: meta.couponCode,
+        email : meta.email,
       });
   
       // Return success response
@@ -125,7 +152,7 @@ console.log("Converted to number:", Number(transaction_id));
         error: error.message,
       });
     }
-  };
+};
   
 
 const createNewCoupon = async (userId) => {
@@ -140,7 +167,7 @@ const createNewCoupon = async (userId) => {
         });
     
         await newCoupon.save();
-        console.log("New coupon created:", newCoupon);
+        // console.log("New coupon created:", newCoupon);
     
         return newCoupon;
         
@@ -152,57 +179,62 @@ const createNewCoupon = async (userId) => {
 }  
 const sendOrderConfirmationEmail = async ({
     name,
-    email,
     tx_ref,
     amount,
-    billingInfo,
+    street,
+		city,
+		state,
+		country,
+		postal_code,
     products,
     couponCode,
-  }) => {
+    email
+   }) => {
     const html = `
-  <div style="font-family: Arial, sans-serif; color: #333;">
-    <h2>🛒 Thank you for your purchase, ${name}!</h2>
-    <p>Your order from <strong>Chief-Store</strong> has been successfully placed.</p>
+  <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+    <h2 style="color: #2e7d32;">🛒 Thank you for your purchase, ${name}!</h2>
+    <p style="font-size: 16px;">Your order from <strong>Chief-Store</strong> has been successfully placed.</p>
 
-    <h3>🧾 Order Summary</h3>
-    <ul>
+    <h3 style="margin-top: 30px; color: #1e88e5;">🧾 Order Summary</h3>
+    <ul style="list-style: none; padding-left: 0;">
       ${products
         .map(
-          (p, i) =>
-            `<li>
-              <strong>Product ${i + 1}</strong>:<br/>
-              ID: ${p.id} <br/>
-              Quantity: ${p.quantity} <br/>
-              Price: ₦${Number(p.price).toLocaleString()}
-            </li>`
+          (p, i) => `
+          <li style="padding: 10px; margin-bottom: 10px; background: #ffffff; border: 1px solid #ccc; border-radius: 5px;">
+            <strong>Product ${i + 1}</strong><br/>
+            <span style="display: block; margin-top: 5px;">ID: ${p.id}</span>
+            <span>Quantity: ${p.quantity}</span><br/>
+            <span>Price: ₦${Number(p.price).toLocaleString()}</span>
+          </li>`
         )
         .join("")}
     </ul>
 
-    <p><strong>Total Paid:</strong> ₦${Number(amount).toLocaleString()}</p>
-    ${couponCode ? `<p><strong>Coupon Applied:</strong> ${couponCode}</p>` : ""}
+    <p style="font-size: 16px; margin-top: 20px;"><strong>Total Paid:</strong> ₦${Number(amount).toLocaleString()}</p>
+    ${couponCode ? `<p style="font-size: 16px;"><strong>Coupon Applied:</strong> ${couponCode}</p>` : ""}
 
-    <h3>📍 Billing Address</h3>
-    <p>
-      ${billingInfo.street}<br/>
-      ${billingInfo.city}, ${billingInfo.state}<br/>
-      ${billingInfo.country} - ${billingInfo.postal_code}
+    <h3 style="margin-top: 30px; color: #1e88e5;">📍 Billing Address</h3>
+    <p style="line-height: 1.6;">
+      ${street}<br/>
+      ${city}, ${state}<br/>
+      ${country} - ${postal_code}
     </p>
 
-    <h3>🔁 Transaction Reference</h3>
-    <p><strong>${tx_ref}</strong></p>
+    <h3 style="margin-top: 30px; color: #1e88e5;">🔁 Transaction Reference</h3>
+    <p style="font-size: 16px; font-weight: bold;">${tx_ref}</p>
 
-    <hr/>
-    <p>Need help? Contact us at <a href="mailto:support@chief-store.com">support@chief-store.com</a></p>
-    <p style="color: #888;">Chief-Store | Powered by Flutterwave</p>
+    <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;"/>
+
+    <p style="font-size: 14px;">Need help? Contact us at <a href="mailto:support@chief-store.com" style="color: #1e88e5;">support@chief-store.com</a></p>
+    <p style="font-size: 13px; color: #888;">Chief-Store | Powered by Flutterwave</p>
   </div>
 `;
 
-  
-    await transport.sendMail({
+
+   await transport.sendMail({
       to: email,
       subject: '🎉 Your Order Receipt from Chief-Store',
       html,
     });
-  };
+};
   

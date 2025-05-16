@@ -12,11 +12,27 @@ const PurchaseSuccessPage = () => {
 	const { clearCart } = useCartStore();
 	const [error, setError] = useState(null);
 
+	const [billingInfo, setBillingInfo] = useState({
+		street: "",
+		city: "",
+		state: "",
+		country: "",
+		postal_code: "",
+	});
+	
+
+
 	useEffect(() => {
+	
 		const handleCheckoutSuccess = async (transaction_id) => {
 			try {
 				await axios.post("/payments/checkout-success", {
 					transaction_id,
+					street,
+					city,
+					state,
+					country,
+					postal_code,
 				});
 				clearCart();
 			} catch (error) {
@@ -26,7 +42,26 @@ const PurchaseSuccessPage = () => {
 			}
 		};
 
-		const transaction_id = new URLSearchParams(window.location.search).get("transaction_id");
+		const queryParams = new URLSearchParams(window.location.search);
+		const transaction_id = queryParams.get("transaction_id");
+
+
+		// Extract billing fields
+		const street = queryParams.get("street") || "";
+		const city = queryParams.get("city") || "";
+		const state = queryParams.get("state") || "";
+		const country = queryParams.get("country") || "";
+		const postal_code = queryParams.get("postal_code") || "";
+
+		setBillingInfo({
+			street,
+			city,
+			state,
+			country,
+			postal_code,
+		});
+
+		
 		if (transaction_id) {
 			handleCheckoutSuccess(transaction_id);
 		} else {
@@ -78,20 +113,27 @@ const PurchaseSuccessPage = () => {
 							<span className='text-sm text-gray-400'>Estimated delivery</span>
 							<span className='text-sm font-semibold text-emerald-400'>3-5 business days</span>
 						</div>
+						<div className='mt-4'>
+							<h2 className='text-sm text-gray-400 mb-2'>Billing Address</h2>
+							<ul className='text-sm text-emerald-300 space-y-1'>
+								<li>{billingInfo.street}</li>
+								<li>{billingInfo.city}, {billingInfo.state}</li>
+								<li>{billingInfo.country} - {billingInfo.postal_code}</li>
+							</ul>
+						</div>
+						
 					</div>
 
 					<div className='space-y-4'>
 						<button
-							className='w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4
-             rounded-lg transition duration-300 flex items-center justify-center'
+							className='w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center'
 						>
 							<HandHeart className='mr-2' size={18} />
 							Thanks for trusting us!
 						</button>
 						<Link
 							to={"/"}
-							className='w-full bg-gray-700 hover:bg-gray-600 text-emerald-400 font-bold py-2 px-4 
-            rounded-lg transition duration-300 flex items-center justify-center'
+							className='w-full bg-gray-700 hover:bg-gray-600 text-emerald-400 font-bold py-2 px-4  rounded-lg transition duration-300 flex items-center justify-center'
 						>
 							Continue Shopping
 							<ArrowRight className='ml-2' size={18} />

@@ -12,7 +12,7 @@ dotenv.config();
 
 const generateToken = (userId) => {
   const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET_ACCESS_TOKEN, {
-    expiresIn: "15m",
+    expiresIn: "90m",
   })
 
   const refreshToken = jwt.sign({ userId }, process.env.JWT_SECRET_REFRESH_TOKEN, {
@@ -31,7 +31,7 @@ const setCookies = (res, accessToken, refreshToken) => {
     httpOnly: true, //prevent xss attacks
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",  //prevent CSRF attacks
-    maxAge: 15 * 60 * 1000,  // 15 minutes
+    maxAge: 90 * 60 * 1000,  // 90 minutes
   })
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true, //prevent xss attacks
@@ -197,13 +197,13 @@ export const refreshToken = async (req, res) => {
 
     }
     const accessToken = jwt.sign({ userId: decoded.userId }, process.env.JWT_SECRET_ACCESS_TOKEN, {
-      expiresIn: "15m",
+      expiresIn: "90m",
     })
     res.cookie("accessToken", accessToken, {
       httpOnly: true, //prevent xss attacks
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",  //prevent CSRF attacks
-      maxAge: 15 * 60 * 1000,  // 15 minutes
+      maxAge: 90 * 60 * 1000,  // 90 minutes
     })
     res.json({ message: "Token refreshed successfully", })
   } catch (error) {

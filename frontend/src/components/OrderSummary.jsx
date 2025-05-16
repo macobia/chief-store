@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom';
 import { MoveRight } from 'lucide-react';
 import axios from '../lib/axios';
 import { toast } from 'react-hot-toast';
+import { useUserStore } from '../stores/useUserStore';
 
 const OrderSummary = () => {
 	const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
+	const user = useUserStore((state) => state.user);
 
 	const savings = subtotal - total;
 	const formattedSubtotal = subtotal.toFixed(2);
@@ -28,13 +30,16 @@ const OrderSummary = () => {
 
 	const handleChange = (e) => {
 		setBillingInfo({ ...billingInfo, [e.target.name]: e.target.value });
+		console.log(user.email)
 	};
 
 	const handleProceed = () => {
+		console.log(user.name)
 		
 		setShowModal(true); // Show billing address modal
 	};
     const handlePayment = async () => {
+		
         const isBillingInfoValid = Object.values(billingInfo).every(Boolean);
 
 		if (!isBillingInfoValid) {
@@ -47,6 +52,7 @@ const OrderSummary = () => {
           const res = await axios.post("/payments/create-checkout-session", {
             products : cart,
             couponCode: coupon ? coupon.code : null,
+			billingInfo,
           });
     
           const {  tx_ref, redirect_url, flutterwavePublicKey, totalAmount } = res.data;
@@ -55,6 +61,8 @@ const OrderSummary = () => {
 			quantity: p.quantity,
 			price: p.price,
 		}));
+		
+		
     
 		  //  Redirect user to Flutterwave payment link
           window.FlutterwaveCheckout({
@@ -65,8 +73,8 @@ const OrderSummary = () => {
             currency: "NGN",
             redirect_url: redirect_url,
             customer: {
-              email: 'cmacobia@gmail.com',
-              name: 'macobia246',
+              email: user.email,
+              name: user.name,
 
             },
             customizations: {
@@ -75,7 +83,8 @@ const OrderSummary = () => {
             //   logo: logo,
             },
 			meta: {
-				userId: "macobia246",
+				userId: user.name,
+				email: user.email,
 				couponCode: coupon ? coupon.code : null,
 				products: JSON.stringify(productMeta),
 				shipping_address: billingInfo,
@@ -88,6 +97,7 @@ const OrderSummary = () => {
         toast.error("Something went wrong. Please try again.");
         }
       };
+
 
 	return (<>
 		<motion.div
