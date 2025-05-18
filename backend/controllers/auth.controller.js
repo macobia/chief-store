@@ -122,21 +122,42 @@ export const login = async (req, res) => {
       } 
 
       const isValid = await bcrypt.compare(password, user.password);
-      if (isValid) {
-        const { accessToken, refreshToken } = generateToken(user._id);
-        await storeRefreshToken(user._id, refreshToken);
-        setCookies(res, accessToken, refreshToken);
-        res.status(200).json({
-          user:
-          {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-          },
-          message: "User logged in successfully",
-          accessToken,
-        });
+      // if (isValid) {
+      //   const { accessToken, refreshToken } = generateToken(user._id);
+      //   await storeRefreshToken(user._id, refreshToken);
+      //   setCookies(res, accessToken, refreshToken);
+      //   res.status(200).json({
+      //     user:
+      //     {
+      //       _id: user._id,
+      //       name: user.name,
+      //       email: user.email,
+      //       role: user.role,
+      //     },
+      //     message: "User logged in successfully",
+      //     accessToken,
+      //   });
+      const isValid = await bcrypt.compare(password, user.password);
+      if (!isValid) {
+         return res.status(401).json({
+            error: { message: "Invalid credentials" }
+       });
+      }
+
+      const { accessToken, refreshToken } = generateToken(user._id);
+      await storeRefreshToken(user._id, refreshToken);
+      setCookies(res, accessToken, refreshToken);
+
+    res.status(200).json({
+     user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        },
+        message: "User logged in successfully",
+        accessToken,
+      });
       } else {
 
        return res.status(401).json({
