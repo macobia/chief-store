@@ -139,7 +139,7 @@ export const login = async (req, res) => {
         });
       } else {
 
-        res.status(401).json({
+       return res.status(401).json({
 
           error: {
             message: "invalid credentials",
