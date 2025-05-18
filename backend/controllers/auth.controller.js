@@ -106,7 +106,7 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
 
-  const { password, email } = req.body
+  const { email, password } = req.body
 
  
 
@@ -119,42 +119,16 @@ export const login = async (req, res) => {
             message: "User not found",
           },
         });
-      } 
-
-      // const isValid = await bcrypt.compare(password, user.password);
-      // if (isValid) {
-      //   const { accessToken, refreshToken } = generateToken(user._id);
-      //   await storeRefreshToken(user._id, refreshToken);
-      //   setCookies(res, accessToken, refreshToken);
-      //   res.status(200).json({
-      //     user:
-      //     {
-      //       _id: user._id,
-      //       name: user.name,
-      //       email: user.email,
-      //       role: user.role,
-      //     },
-      //     message: "User logged in successfully",
-      //     accessToken,
-      //   });
-      // } else {
-
-      //  return res.status(401).json({
-
-      //     error: {
-      //       message: "invalid credentials",
-      //     },
-      //   })
-
-      // }
-      console.log("before isvalid")
-      const isValid = await bcrypt.compare(password, user.password);
+      } ;
+ 
+      const isValid = await bcrypt.compare(password, user.password)
   
       if (!isValid) {
-      return res.status(401).json({
-        error: { message: "Invalid credentials" };
-        console.log("invalid credential mac")
+      return res.status(400).json({
+        error: { message: "Invalid credentials" }
+       
         });
+        console.log("invalid credential mac")
       }
 
       const { accessToken, refreshToken } = generateToken(user._id);
