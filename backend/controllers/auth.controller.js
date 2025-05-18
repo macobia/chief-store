@@ -147,10 +147,13 @@ export const login = async (req, res) => {
       //   })
 
       // }
+      console.log("before isvalid")
       const isValid = await bcrypt.compare(password, user.password);
+  
       if (!isValid) {
       return res.status(401).json({
-        error: { message: "Invalid credentials" }
+        error: { message: "Invalid credentials" };
+        console.log("invalid credential mac")
         });
       }
 
