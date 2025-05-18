@@ -2,8 +2,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import path from "path";
-import fs from 'fs';
+// import path from "path";
+// import fs from 'fs';
 
 
 import authRoutes from "./routes/auth.route.js";
@@ -34,7 +34,7 @@ const port = process.env.PORT || 3000
 app.use(express.json());
 app.use(cookieParser());
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
@@ -44,12 +44,12 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
 // if (process.env.NODE_ENV === "production") {
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
+// app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-    console.log("Index.html exists?", fs.existsSync(indexPath));
-	});
+// 	app.get("*", (req, res) => {
+// 		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+//     console.log("Index.html exists?", fs.existsSync(indexPath));
+// 	});
 
 // }
 

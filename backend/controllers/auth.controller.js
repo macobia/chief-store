@@ -282,6 +282,25 @@ export const resetPassword = async (req, res) => {
     user.resetPasswordExpires = undefined;
     await user.save();
     res.json({message: "Password reset successfully"});
+
+    await transport.sendMail({
+      to: user.email,
+      subject: "Password Reset Request",
+      html: `
+     <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <div style="background-color: #059669; padding: 20px; color: white; text-align: center;">
+      <h2 style="margin: 0;">Chief-Store</h2>
+    </div>
+    <div style="padding: 30px;">
+      <p style="font-size: 16px; color: #333;">Your password has been changed successfully.</p>
+      <p style="font-size: 14px; color: #666;">– The Chief-Store Team</p>
+    </div>
+    <div style="background: #f3f4f6; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+      © ${new Date().getFullYear()} Chief-Store. All rights reserved.
+    </div>
+  </div>
+      `,
+    });
   } catch (error) {
     console.log("Error in resetPassword controller", error.message);
     res.status(500).json({ message: "Server error", error: error.message });
