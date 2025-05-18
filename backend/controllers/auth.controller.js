@@ -137,37 +137,37 @@ export const login = async (req, res) => {
       //     message: "User logged in successfully",
       //     accessToken,
       //   });
+      // } else {
+
+      //  return res.status(401).json({
+
+      //     error: {
+      //       message: "invalid credentials",
+      //     },
+      //   })
+
+      // }
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) {
-         return res.status(401).json({
-            error: { message: "Invalid credentials" }
-       });
+      return res.status(401).json({
+        error: { message: "Invalid credentials" }
+        });
       }
 
       const { accessToken, refreshToken } = generateToken(user._id);
       await storeRefreshToken(user._id, refreshToken);
       setCookies(res, accessToken, refreshToken);
 
-    res.status(200).json({
-     user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+      res.status(200).json({
+       user: {
+       _id: user._id,
+       name: user.name,
+       email: user.email,
+       role: user.role,
         },
         message: "User logged in successfully",
         accessToken,
       });
-      } else {
-
-       return res.status(401).json({
-
-          error: {
-            message: "invalid credentials",
-          },
-        })
-
-      }
     } catch (error) {
       console.log(error);
       res.status(500).json({
