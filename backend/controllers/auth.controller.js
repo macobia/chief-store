@@ -7,6 +7,8 @@ import { redis } from '../lib/redis.js';
 import { transport } from "../lib/nodemailer.js";
 import crypto from 'crypto'
 
+
+
 dotenv.config();
 
 
@@ -231,6 +233,7 @@ export const forgotPassword = async (req, res) => {
     await user.save();
 
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
+    console.log(user.email)
     await transport.sendMail({
       to: user.email,
       subject: "Password Reset Request",
