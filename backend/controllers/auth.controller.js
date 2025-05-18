@@ -121,7 +121,7 @@ export const login = async (req, res) => {
         });
       } 
 
-      const isValid = await bcrypt.compare(password, user.password);
+      // const isValid = await bcrypt.compare(password, user.password);
       // if (isValid) {
       //   const { accessToken, refreshToken } = generateToken(user._id);
       //   await storeRefreshToken(user._id, refreshToken);
