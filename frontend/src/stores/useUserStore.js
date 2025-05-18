@@ -58,6 +58,7 @@ export const useUserStore = create((set, get) => ({
             toast.success(res.data.message);
             set({user: null, loading: false});
         } catch (error) {
+            console.log("log-out", error)
             set({loading: false});
             // console.log("error", error);
         }
