@@ -99,35 +99,77 @@ export const useUserStore = create((set, get) => ({
  
 }))
 
-// Axios interceptor for token refresh
+// // Axios interceptor for token refresh
+// let refreshPromise = null;
+
+// axios.interceptors.response.use(
+// 	(response) => response,
+// 	async (error) => {
+// 		const originalRequest = error.config;
+// 		if (error.response?.status === 401 && !originalRequest._retry) {
+// 			originalRequest._retry = true;
+
+// 			try {
+// 				// If a refresh is already in progress, wait for it to complete
+// 				if (refreshPromise) {
+// 					await refreshPromise;
+// 					return axios(originalRequest);
+// 				}
+
+// 				// Start a new refresh process
+// 				refreshPromise = useUserStore.getState().refreshToken();
+// 				await refreshPromise;
+// 				refreshPromise = null;
+
+// 				return axios(originalRequest);
+// 			} catch (refreshError) {
+// 				// If refresh fails, redirect to login or handle as needed
+// 				useUserStore.getState().logout();
+// 				return Promise.reject(refreshError);
+// 			}
+// 		}
+// 		return Promise.reject(error);
+// 	}
+// );
+
+
 let refreshPromise = null;
 
 axios.interceptors.response.use(
-	(response) => response,
-	async (error) => {
-		const originalRequest = error.config;
-		if (error.response?.status === 401 && !originalRequest._retry) {
-			originalRequest._retry = true;
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-			try {
-				// If a refresh is already in progress, wait for it to complete
-				if (refreshPromise) {
-					await refreshPromise;
-					return axios(originalRequest);
-				}
+    // Check if it's an auth error and not already retried
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-				// Start a new refresh process
-				refreshPromise = useUserStore.getState().refreshToken();
-				await refreshPromise;
-				refreshPromise = null;
+      const userStore = useUserStore.getState();
 
-				return axios(originalRequest);
-			} catch (refreshError) {
-				// If refresh fails, redirect to login or handle as needed
-				useUserStore.getState().logout();
-				return Promise.reject(refreshError);
-			}
-		}
-		return Promise.reject(error);
-	}
+      // If already refreshing, wait
+      if (refreshPromise) {
+        try {
+          await refreshPromise;
+          return axios(originalRequest);
+        } catch (err) {
+          userStore.logout();
+          return Promise.reject(err);
+        }
+      }
+
+      try {
+        // Begin new refresh
+        refreshPromise = userStore.refreshToken();
+        await refreshPromise;
+        refreshPromise = null;
+        return axios(originalRequest);
+      } catch (refreshError) {
+        userStore.logout();
+        refreshPromise = null;
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
 );
