@@ -13,6 +13,7 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+	// console.log(import.meta.env.MODE)
     // console.log(email, password);
 	login(email, password);
   }

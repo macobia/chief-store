@@ -20,7 +20,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '50mb' }));  // allows you to parse the body of the request
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173', // frontend URL
     credentials: true 
@@ -30,11 +30,11 @@ const port = process.env.PORT || 3000
 
 
 
-// app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true })); //used during api testing instead of json 
 app.use(express.json());
 app.use(cookieParser());
 
-// const __dirname = path.resolve();
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
@@ -43,6 +43,10 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
+// const __dirname = path.resolve();
+
+
+//use this method if you want to deploy the backend and frontend in one server making the frontend to be a static website, you will have to move env and package.json, node_modules and package-lock.json to the main repo and use this as your build command npm ci && npm ci --prefix frontend && npm run build --prefix frontend and this as your start command node backend/server.js
 // if (process.env.NODE_ENV === "production") {
 // app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
