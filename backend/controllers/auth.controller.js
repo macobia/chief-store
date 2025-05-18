@@ -30,13 +30,15 @@ const setCookies = (res, accessToken, refreshToken) => {
   res.cookie("accessToken", accessToken, {
     httpOnly: true, //prevent xss attacks
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",  //prevent CSRF attacks
+    // sameSite: "strict",  //prevent CSRF attacks
+    sameSite: "none",  //prevent CSRF attacks
     maxAge: 90 * 60 * 1000,  // 90 minutes
   })
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true, //prevent xss attacks
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",  //prevent CSRF attacks
+    // sameSite: "strict",  //prevent CSRF attacks
+    sameSite: "none",  //prevent CSRF attacks
     maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days
   })
 }
@@ -202,7 +204,8 @@ export const refreshToken = async (req, res) => {
     res.cookie("accessToken", accessToken, {
       httpOnly: true, //prevent xss attacks
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",  //prevent CSRF attacks
+      // sameSite: "strict",  //prevent CSRF attacks
+      sameSite: "none",  //prevent CSRF attacks
       maxAge: 90 * 60 * 1000,  // 90 minutes
     })
     res.json({ message: "Token refreshed successfully", })
