@@ -37,7 +37,7 @@ export const adminRoute = async (req, res, next) => {
         if (req.user && req.user.role === "admin"){
             next();
         } else {
-            return res.status(401).json({error: {message: "Unauthorized, Admin only"}});
+            return res.status(403).json({error: {message: "Unauthorized, Admin only"}});
 
         }
     } catch (error) {

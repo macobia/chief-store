@@ -60,6 +60,7 @@ export const useUserStore = create((set, get) => ({
    
         try {
             const res = await axios.post("/auth/logout");
+             refreshPromise = null;
             // console.log("user", res.data);
             toast.success(res.data.message);
             set({user: null, loading: false});
