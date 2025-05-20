@@ -25,7 +25,7 @@ const Navbar = () => {
                             //user profile name 
                            <>
                            <div className='relative group text-gray-300 transition duration-300 ease-in-out'>
-                            <User size={24} className=" hidden sm:inline mr-1" />
+                            <User size={24} className=" hidden mr-1" />
                             <span className='inline-block '>{userName}</span>
                            </div>
                             
