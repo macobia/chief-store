@@ -169,8 +169,8 @@ export const logout = async (req, res) => {
    
     }
 
-    res.clearCookie("accessToken", { httpOnly: true, secure: true, sameSite: 'none' })
-    res.clearCookie("refreshToken", { httpOnly: true, secure: true, sameSite: 'none' })
+    res.clearCookie("accessToken")
+    res.clearCookie("refreshToken")
     res.json({ message: "Logged Out successfully from your account" })
   } catch (error) {
     res.status(500).json({
