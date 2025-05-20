@@ -63,6 +63,7 @@ export const useUserStore = create((set, get) => ({
              refreshPromise = null;
             // console.log("user", res.data);
             toast.success(res.data.message);
+            set({user: res.data, loading: false});
             set({user: null, loading: false});
         } catch (error) {
             console.log("log-out", error)
