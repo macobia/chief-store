@@ -25,8 +25,8 @@ const Navbar = () => {
                             //user profile name 
                            <>
                            <div className='relative group text-gray-300 transition duration-300 ease-in-out'>
-                            <User size={24} className="inline-block mr-1" />
-                            <span className=' sm:inline'>{userName}</span>
+                            <User size={24} className="sm:inline mr-1" />
+                            <span className='inline-block '>{userName}</span>
                            </div>
                             
                             <Link to={"/cart"} className='relative group text-gray-300 hover:text-emerald-400 transition duration-300 ease-in-out' >
