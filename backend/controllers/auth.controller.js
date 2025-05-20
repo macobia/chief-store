@@ -31,14 +31,14 @@ const storeRefreshToken = async (userId, refreshToken) => {
 const setCookies = (res, accessToken, refreshToken) => {
   res.cookie("accessToken", accessToken, {
     httpOnly: true, //prevent xss attacks
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     // sameSite: "strict",  //prevent CSRF attacks
     sameSite: "none",  //prevent CSRF attacks
     maxAge: 90 * 60 * 1000,  // 90 minutes
   })
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true, //prevent xss attacks
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     // sameSite: "strict",  //prevent CSRF attacks
     sameSite: "none",  //prevent CSRF attacks
     maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days
@@ -169,8 +169,20 @@ export const logout = async (req, res) => {
    
     }
 
-    res.clearCookie("accessToken")
-    res.clearCookie("refreshToken")
+    // res.clearCookie("accessToken")
+    res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    path: "/"
+    });
+    // res.clearCookie("refreshToken")
+    res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    path: "/"
+    });
     res.json({ message: "Logged Out successfully from your account" })
   } catch (error) {
     res.status(500).json({
