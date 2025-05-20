@@ -2,6 +2,10 @@ import { useEffect } from "react";
 import CategoryItem from '../components/CategoryItem'
 import { useProductStore } from '../stores/useProductStore';
 import FeaturedProducts from '../components/FeaturedProducts';
+import Footer from "../components/Footer";
+import Carousel from '../components/Carousel';
+import ReviewsSlider from "../components/ReviewsSlider";
+import InfoCards from '../components/InfoCards';
 
 const categories = [
   {href: "/jeans", name: "Jeans", imageUrl: "/jeans.jpg"},
@@ -21,7 +25,8 @@ useEffect(() => {
 }, [fetchFeaturedProducts]);
 
   return (
-    <div className='relative min-h-screen text-white overflow-hidden'>
+    <div className='relative min-h-screen text-white overflow-hidden '>
+		<Carousel/>
       <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
       <h1 className='text-center text-5xl sm:text-6xl font-bold text-emerald-400 mb-4'>
 					Explore Our Categories
@@ -39,6 +44,9 @@ useEffect(() => {
 				{!isLoading && products.length > 0 && <FeaturedProducts featuredProducts={products} />}
 
       </div>
+	  <ReviewsSlider/>
+	  <InfoCards/>
+	  <Footer />  
     </div>
   )
 }

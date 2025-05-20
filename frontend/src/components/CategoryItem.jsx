@@ -19,7 +19,7 @@ const CategoryItem = ({ category }) => {
 					</div>
 				</div>
 			</Link>
-		</div>
+	</div>
   )
 }
 

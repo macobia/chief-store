@@ -2,7 +2,12 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 import HomePage from './pages/HomePage.jsx'
 import CartPage from "./pages/CartPage";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+
 import Navbar from './components/Navbar.jsx'
+
 import { Toaster } from 'react-hot-toast';
 import { useUserStore } from './stores/useUserStore';
 import React, { Suspense, useEffect } from 'react'
@@ -80,12 +85,15 @@ function App() {
 
       <Route path='/forgot-password'  element={ <ForgotPassPage />}/>
       <Route path='/reset-password/:token'   element={!user ? <ResetPassPage /> : <Navigate to="/" replace />}/>
+
      
       
    
     </Routes> 
     </Suspense>
-    </div>                   
+
+    </div>  
+                
     </div>
   )
 }

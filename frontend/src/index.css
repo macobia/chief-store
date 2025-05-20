@@ -1,4 +1,6 @@
 @import "tailwindcss";
+
+
 .web-title {
     font-family: "Underdog", system-ui;
     font-weight: 400;
@@ -6,4 +8,9 @@
   }
   body {
     font-family: "Playfair Display", serif;
+    
   }
+  a {
+    cursor: pointer;
+  }
+  
