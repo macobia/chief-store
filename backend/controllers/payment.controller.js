@@ -8,6 +8,7 @@ dotenv.config();
 
 
 
+// create checkout session
 export const createCheckoutSession = async (req, res) => {
     try {
         const {products, couponCode, billingInfo} = req.body;
@@ -45,14 +46,16 @@ export const createCheckoutSession = async (req, res) => {
         const flutterwavePublicKey = process.env.FLW_PUBLIC_KEY;
 
         if (totalAmount >= 200) {
-            await createNewCoupon(req.user._id)
+            await createNewCoupon(req.user._id, req.user.email)
         }
-        res.status(200).json({ tx_ref, totalAmount, redirect_url,logo, flutterwavePublicKey });
+        res.status(200).json({ tx_ref, totalAmount, redirect_url,logo, flutterwavePublicKey,coupon: coupon ? { code: coupon.code, discountPercentage: coupon.discountPercentage } : null, });
     } catch (error) {
         console.error("Error processing Checkout", error.message);
         res.status(500).json({message: "Server Error while processing checkout", error: error.message})
     }
 }
+
+// check out success
 
 export const checkOutSuccess = async (req, res) => {
   try {
@@ -61,21 +64,9 @@ export const checkOutSuccess = async (req, res) => {
       if (!transaction_id) {
         return res.status(400).json({ message: "Transaction ID is required." });
       }
-
-  // console.log("Received transaction_id:", transaction_id);
-
-  // const transactionId = extractTransactionId(transaction_id);
-  // console.log("Received transaction_id:", transaction_id);
-  // console.log("Type of transaction_id:", typeof transaction_id);
-  // console.log("Converted to number:", Number(transaction_id));
-      
   
       // Verify transaction with Flutterwave
       const verifyResponse = await flw.Transaction.verify({ id: transaction_id });
-      // const verifyResponse = await flw.Transaction.verify({ id: 174728532086909275602 });
-      // console.log("Verify Response:", verifyResponse);
-      // console.log("meta data:", verifyResponse.customizations)
-  
       const isTransactionSuccessful =
         verifyResponse.status === "success" &&
         verifyResponse.data.status === "successful";
@@ -154,20 +145,29 @@ export const checkOutSuccess = async (req, res) => {
     }
 };
   
-
-const createNewCoupon = async (userId) => {
+// function to create new coupon AND send email
+const createNewCoupon = async (userId, email) => {
     try {
+      // Delete existing coupon for the user
       await Coupon.findOneAndDelete({userId});
 
+        // Generate coupon code
+        const code = "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+        // Create new coupon
         const newCoupon = new Coupon({
-            code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+            code: code,
             discountPercentage: 10,
             expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // expires in 30 days
             userId: userId,
         });
-    
+
+        // Save the new coupon
         await newCoupon.save();
-        // console.log("New coupon created:", newCoupon);
+
+
+        // Send email with the coupon code
+        await sendCouponEmail({ email, code });
     
         return newCoupon;
         
@@ -176,7 +176,31 @@ const createNewCoupon = async (userId) => {
     }
    
     
-}  
+};
+
+//function to send couponCode to users via email
+const sendCouponEmail = async ({ email, code }) => {
+  const html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+      <h2 style="color: #2e7d32;">🎁 You've Earned a Coupon!</h2>
+      <p>Thanks for shopping at Chief-Store. You've received a coupon for your next order.</p>
+      <p><strong>Coupon Code:</strong> <span style="background: #eee; padding: 5px 10px; border-radius: 4px;">${code}</span></p>
+      <p>This gives you <strong>10% off</strong> your next purchase and is valid for the next 30 days.</p>
+      <p style="font-size: 14px;">Use this at checkout. Happy shopping!</p>
+      <hr />
+      <p style="font-size: 13px; color: #888;">Chief-Store | Powered by Flutterwave</p>
+    </div>
+  `;
+
+  await transport.sendMail({
+    to: email,
+    subject: '🎉 Your Chief-Store Coupon Code!',
+    html,
+  });
+};
+
+
+// function to send order confirmation email
 const sendOrderConfirmationEmail = async ({
     name,
     tx_ref,

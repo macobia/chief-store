@@ -61,6 +61,14 @@ const OrderSummary = () => {
 			quantity: p.quantity,
 			price: p.price,
 		}));
+
+		const meta = {
+ 			userId: user._id,
+  			email: user.email,
+  			products: JSON.stringify(productMeta),
+  			shipping_address: JSON.stringify(billingInfo),
+			couponCode: coupon ? coupon.code : null
+		};
 		
 		
     
@@ -82,13 +90,14 @@ const OrderSummary = () => {
               description: "Purchase from Chief-Store",
             //   logo: logo,
             },
-			meta: {
-				userId: user.name,
-				email: user.email,
-				couponCode: coupon ? coupon.code : null,
-				products: JSON.stringify(productMeta),
-				shipping_address: billingInfo,
-			  }
+			// meta: {
+			// 	userId: user.name,
+			// 	email: user.email,
+			// 	couponCode: coupon ? coupon.code : null,
+			// 	products: JSON.stringify(productMeta),
+			// 	shipping_address: billingInfo,
+			//   }
+			meta,
           });
 
 

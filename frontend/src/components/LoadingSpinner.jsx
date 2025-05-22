@@ -4,17 +4,17 @@ import './loader.css';
 const LoadingSpinner = () => {
   return (
     <div>
-       <div class="loader-wrapper">
+       <div className="loader-wrapper">
                 
-                <div class="cube-wrapper">
-                    <div class="cube">
-                        <div class="sides">
-                          <div class="top"></div>
-                          <div class="right"></div>
-                          <div class="bottom"></div>
-                          <div class="left"></div>
-                          <div class="front"></div>
-                          <div class="back"></div>
+                <div className="cube-wrapper">
+                    <div className="cube">
+                        <div className="sides">
+                          <div className="top"></div>
+                          <div className="right"></div>
+                          <div className="bottom"></div>
+                          <div className="left"></div>
+                          <div className="front"></div>
+                          <div className="back"></div>
                         </div>
                       </div>
                 </div>
