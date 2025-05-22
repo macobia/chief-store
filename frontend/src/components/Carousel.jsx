@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import { Link} from 'react-router-dom';
+import toast from "react-hot-toast";
 
 
 const Carousel = () => {
@@ -37,6 +38,7 @@ const Carousel = () => {
 
       <button
         className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
+        onClick={() => toast.success("Login to start shopping")}
       >
         <Link to={'/cart'}>Shop Now</Link>
         
@@ -63,6 +65,7 @@ const Carousel = () => {
       
       <button
         className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
+        onClick={() => toast.success("Login to start shopping")}
       >
         <Link to={'/cart'}>Shop Now</Link>
       </button>
@@ -88,6 +91,7 @@ const Carousel = () => {
     
       <button
         className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
+        onClick={() => toast.success("Login to start shopping")}
       >
        <Link to={'/cart'}>Shop Now</Link>
       </button>
