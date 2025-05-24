@@ -35,6 +35,7 @@ const LoginPage = React.lazy(() => import('./pages/LoginPage.jsx'));
 const ForgotPassPage = React.lazy(() => import('./pages/ForgotPassPage.jsx'));
 const ResetPassPage = React.lazy(() => import('./pages/ResetPassPage.jsx'));
 const AdminPage = React.lazy(() => import('./pages/AdminPage.jsx'));
+const UserPage = React.lazy(() => import('./pages/UserPage.jsx'));
 const CategoryPage = React.lazy(() => import('./pages/CategoryPage.jsx'));
 function App() {
   // const token = useTokenStore((state) => state.token);
@@ -78,6 +79,7 @@ function App() {
       
       <Route path='/category/:category'  element={<CategoryPage />}/>
       <Route path='/cart' element={user ? <CartPage /> : <Navigate to='/login' />} />
+      <Route path='/user' element={user ? <UserPage /> : <Navigate to='/login' />} />
       <Route path='/purchase-success'	element={user ? <PurchaseSuccessPage /> : <Navigate to='/login' />}
 	/>
 		 
@@ -85,10 +87,6 @@ function App() {
 
       <Route path='/forgot-password'  element={ <ForgotPassPage />}/>
       <Route path='/reset-password/:token'   element={!user ? <ResetPassPage /> : <Navigate to="/" replace />}/>
-
-     
-      
-   
     </Routes> 
     </Suspense>
 

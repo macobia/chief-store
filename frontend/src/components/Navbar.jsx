@@ -24,10 +24,10 @@ const Navbar = () => {
                         {user && (
                             //user profile name 
                            <>
-                           <div className='relative group text-gray-300 transition duration-300 ease-in-out'>
+                           <Link to={'/user'} className='relative group text-gray-300 transition duration-300 ease-in-out'>
                             <User size={24} className=" hidden mr-1" />
                             <span className='inline-block '>{userName}</span>
-                           </div>
+                           </Link>
                             
                             <Link to={"/cart"} className='relative group text-gray-300 hover:text-emerald-400 transition duration-300 ease-in-out' >
                                 <ShoppingCart className='inline-block mr-1 group-hover:text-emerald-400 ' size={20} />
@@ -68,6 +68,7 @@ const Navbar = () => {
                                 </Link>
                             </>
                         )}
+                        
                     </nav>
                 </div>
             </div>

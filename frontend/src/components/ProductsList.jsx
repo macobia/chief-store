@@ -1,10 +1,13 @@
+import { useState } from "react";
 // eslint-disable-next-line
 import { motion } from "framer-motion";
-import { Trash, Star } from "lucide-react";
+import { Trash, Star, Pencil } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
+import UpdateProductForm from "./UpdateProductForm";
 
 const ProductsList = () => {
 	const { deleteProduct, toggleFeaturedProduct, products } = useProductStore();
+	const [editingProductId, setEditingProductId] = useState(null);
 
 	console.log("products", products);
 
@@ -80,15 +83,19 @@ const ProductsList = () => {
 									onClick={() => toggleFeaturedProduct(product._id)}
 									className={`p-1 rounded-full ${
 										product.isFeatured ? "bg-yellow-400 text-gray-900" : "bg-gray-600 text-gray-300"
-									} hover:bg-yellow-500 transition-colors duration-200`}
+									} hover:bg-yellow-500 transition-colors duration-200 cursor-pointer`}
 								>
 									<Star className='h-5 w-5' />
 								</button>
 							</td>
 							<td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
+								<button onClick={() => setEditingProductId(product._id)} className='text-blue-400 hover:text-blue-300 cursor-pointer'>
+									<Pencil className='h-5 w-5' />
+								</button>
+								{" "}
 								<button
 									onClick={() => deleteProduct(product._id)}
-									className='text-red-400 hover:text-red-300'
+									className='text-red-400 hover:text-red-300 cursor-pointer'
 								>
 									<Trash className='h-5 w-5' />
 								</button>
@@ -97,6 +104,12 @@ const ProductsList = () => {
 					))}
 				</tbody>
 			</table>
+			{editingProductId && (
+			 <UpdateProductForm
+				productId={editingProductId}
+				onClose={() => setEditingProductId(null)}
+			 />
+			)}
 		</motion.div>
 	);
 };

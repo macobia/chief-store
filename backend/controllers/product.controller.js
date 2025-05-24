@@ -64,6 +64,55 @@ export const createProduct = async (req, res) => {
 	}
 };
 
+//to get single product
+export const getSingleProduct = async (req, res) => {
+	try {
+		const product = await Product.findById(req.params.id);
+
+		if (!product) {
+			return res.status(404).json({ message: "Product not found" });
+		}
+
+		res.json(product);
+	} catch (error) {
+		console.error("Error fetching single product:", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
+
+// to update product 
+export const updateProduct = async (req, res) => {
+	try {
+		const { image } = req.body;
+		const updates = { ...req.body };
+
+		// If image is provided, upload to Cloudinary
+		if (image) {
+			const cloudinaryResponse = await cloudinary.uploader.upload(image, {
+				folder: "products",
+			});
+			updates.image = cloudinaryResponse.secure_url;
+		}
+
+		// Remove image from updates if not provided
+		if (!image) delete updates.image;
+
+		const product = await Product.findByIdAndUpdate(req.params.id, updates, {
+			new: true,
+		});
+
+		if (!product) {
+			return res.status(404).json({ message: "Product not found" });
+		}
+
+		res.json(product);
+	} catch (error) {
+		console.error("Error in updateProduct controller:", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
+
+
 export const deleteProduct = async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
