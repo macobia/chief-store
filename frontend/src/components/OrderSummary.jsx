@@ -53,6 +53,7 @@ const OrderSummary = () => {
             products : cart,
             couponCode: coupon ? coupon.code : null,
 			billingInfo,
+			
           });
     
           const {  tx_ref, redirect_url, flutterwavePublicKey, totalAmount } = res.data;

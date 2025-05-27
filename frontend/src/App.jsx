@@ -14,6 +14,7 @@ import React, { Suspense, useEffect } from 'react'
 import LoadingSpinner from './components/LoadingSpinner.jsx'
 import { useCartStore } from './stores/useCartStore.js';
 import PurchaseSuccessPage from "./pages/PurchaseSuccessPage";
+import AdminPage from "./pages/AdminPage";
 
 
 // import ResetPassPage from './pages/ResetPassPage.jsx'
@@ -34,7 +35,7 @@ const SignUpPage = React.lazy(() => import('./pages/SignUpPage.jsx'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage.jsx'));
 const ForgotPassPage = React.lazy(() => import('./pages/ForgotPassPage.jsx'));
 const ResetPassPage = React.lazy(() => import('./pages/ResetPassPage.jsx'));
-const AdminPage = React.lazy(() => import('./pages/AdminPage.jsx'));
+// const AdminPage = React.lazy(() => import('./pages/AdminPage.jsx'));
 const UserPage = React.lazy(() => import('./pages/UserPage.jsx'));
 const CategoryPage = React.lazy(() => import('./pages/CategoryPage.jsx'));
 function App() {

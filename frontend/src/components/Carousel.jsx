@@ -2,9 +2,13 @@ import React from "react";
 import Slider from "react-slick";
 import { Link} from 'react-router-dom';
 import toast from "react-hot-toast";
+import { useUserStore } from "../stores/useUserStore";
 
 
 const Carousel = () => {
+
+  const { user } = useUserStore();
+
   const settings = {
     dots: true,
     infinite: true,
@@ -16,6 +20,12 @@ const Carousel = () => {
     arrows: false,
   };
   const imgStyle = { height: "600px",};
+
+  const handleShopClick = () => {
+    if (!user) {
+      toast.success("Login to start shopping");
+    }
+  };
 
   return (
     <div className="w-full max-w-full mx-auto my-0 h-96 " style={imgStyle}>
@@ -38,7 +48,7 @@ const Carousel = () => {
 
       <button
         className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
-        onClick={() => toast.success("Login to start shopping")}
+        onClick={handleShopClick}
       >
         <Link to={'/cart'}>Shop Now</Link>
         
@@ -65,7 +75,7 @@ const Carousel = () => {
       
       <button
         className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
-        onClick={() => toast.success("Login to start shopping")}
+        onClick={handleShopClick}
       >
         <Link to={'/cart'}>Shop Now</Link>
       </button>
@@ -91,7 +101,7 @@ const Carousel = () => {
     
       <button
         className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
-        onClick={() => toast.success("Login to start shopping")}
+        onClick={handleShopClick}
       >
        <Link to={'/cart'}>Shop Now</Link>
       </button>

@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
     user: {
-        type: Number,
+        // type: Number,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     }, 
@@ -35,6 +36,18 @@ const orderSchema = new mongoose.Schema({
         type: String,
         // unique: true,
     },
+     orderStatus: {
+        type: String,
+        enum: ["pending", "success", "decline"],
+        default: "pending", // default is pending until admin acts
+    },
+    billingAddress: {
+        street: String,
+        city: String,
+        state: String,
+        country: String,
+        postal_code: String
+    }
     // OpaySessionId:{
     //     type: String,
     //     unique: true,
