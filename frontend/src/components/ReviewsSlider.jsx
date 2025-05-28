@@ -1,20 +1,70 @@
-import React, { useState } from "react";
-import { StarIcon } from "@heroicons/react/24/solid";
-import {  ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from 'react';
+import { StarIcon } from '@heroicons/react/24/solid';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const customers = [
-  { id: 1, name: "Alice Johnson", review: "Great service, very reliable!", stars: 5 },
-  { id: 2, name: "Bob Smith", review: "Good experience overall.", stars: 4 },
-  { id: 3, name: "Catherine Lee", review: "Exceptional quality and support.", stars: 5 },
-  { id: 4, name: "Ahmed Musa", review: "Satisfied with the results.", stars: 4 },
-  { id: 5, name: "Emma Obi", review: "Could be better in some areas.", stars: 3 },
-  { id: 6, name: "Frank Wilson", review: "Fast response and helpful.", stars: 5 },
-  { id: 7, name: "Grace Kim", review: "Loved the attention to detail.", stars: 5 },
-  { id: 8, name: "Henry Turner", review: "Affordable and efficient.", stars: 4 },
-  { id: 9, name: "Isabel Martinez", review: "From ordering to delivering... can't complain.", stars: 5 },
-  { id: 10, name: "Jack Lee", review: "Will definitely buy again.", stars: 5 },
-  { id: 11, name: "Femi Adewunmi", review: "Will definitely use again.", stars: 5 },
-  { id: 12, name: "Phil Wilson", review: "Delivery was excellent, I love the packaging. Thank you.", stars: 5 },
+  {
+    id: 1,
+    name: 'Alice Johnson',
+    review: 'Great service, very reliable!',
+    stars: 5,
+  },
+  { id: 2, name: 'Bob Smith', review: 'Good experience overall.', stars: 4 },
+  {
+    id: 3,
+    name: 'Catherine Lee',
+    review: 'Exceptional quality and support.',
+    stars: 5,
+  },
+  {
+    id: 4,
+    name: 'Ahmed Musa',
+    review: 'Satisfied with the results.',
+    stars: 4,
+  },
+  {
+    id: 5,
+    name: 'Emma Obi',
+    review: 'Could be better in some areas.',
+    stars: 3,
+  },
+  {
+    id: 6,
+    name: 'Frank Wilson',
+    review: 'Fast response and helpful.',
+    stars: 5,
+  },
+  {
+    id: 7,
+    name: 'Grace Kim',
+    review: 'Loved the attention to detail.',
+    stars: 5,
+  },
+  {
+    id: 8,
+    name: 'Henry Turner',
+    review: 'Affordable and efficient.',
+    stars: 4,
+  },
+  {
+    id: 9,
+    name: 'Isabel Martinez',
+    review: "From ordering to delivering... can't complain.",
+    stars: 5,
+  },
+  { id: 10, name: 'Jack Lee', review: 'Will definitely buy again.', stars: 5 },
+  {
+    id: 11,
+    name: 'Femi Adewunmi',
+    review: 'Will definitely use again.',
+    stars: 5,
+  },
+  {
+    id: 12,
+    name: 'Phil Wilson',
+    review: 'Delivery was excellent, I love the packaging. Thank you.',
+    stars: 5,
+  },
 ];
 
 const starsDisplay = (count) => {
@@ -24,13 +74,13 @@ const starsDisplay = (count) => {
       <StarIcon
         key={i}
         className={`w-5 h-5 inline ${
-          i < count ? "text-emerald-400" : "text-gray-300"
+          i < count ? 'text-emerald-400' : 'text-gray-300'
         }`}
       />
     ));
 };
 
- function ReviewsSlider() {
+function ReviewsSlider() {
   const [page, setPage] = useState(0);
   const cardsPerPage = 3;
   const maxPage = Math.floor((customers.length - 1) / cardsPerPage);
@@ -51,7 +101,9 @@ const starsDisplay = (count) => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-center text-5xl sm:text-6xl font-bold text-emerald-400 mb-6">What Our Customers Say About Us</h2>
+      <h2 className="text-center text-5xl sm:text-6xl font-bold text-emerald-400 mb-6">
+        What Our Customers Say About Us
+      </h2>
 
       <div className="relative">
         <div className="flex space-x-6 overflow-hidden ">
@@ -70,22 +122,21 @@ const starsDisplay = (count) => {
         {/* Navigation buttons */}
         <button
           onClick={prevPage}
-          
           className="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-400 hover:bg-gray-300 rounded-full p-2 transition-colors duration-300"
           aria-label="Previous"
         >
-         <ChevronLeft className='w-6 h-6' />
+          <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={nextPage}
           className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-400 hover:bg-gray-300 rounded-full p-2 transition-colors duration-300"
           aria-label="Next"
         >
-         <ChevronRight className='w-6 h-6' />
+          <ChevronRight className="w-6 h-6" />
         </button>
       </div>
     </div>
   );
 }
 
-export default ReviewsSlider
+export default ReviewsSlider;

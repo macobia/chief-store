@@ -39,23 +39,6 @@ export const getOrderStatus = async (req, res) => {
 };
 
 //  To create order 
-export const createOrder = async (req, res) => {
-  try {
-        
-    const orderData = req.body;
-
-    const newOrder = await Order.create(orderData);
-
-    // ✅ Emit to socket immediately after creation
-    io.emit("new_order", newOrder);
-
-    res.status(201).json(newOrder);
-  } catch (error) {
-    console.error("Error creating order:", error.message);
-    res.status(500).json({ message: "Order creation failed", error: error.message });
-
-  }
-};
 
 
 

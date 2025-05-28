@@ -53,7 +53,26 @@ const userSchema = new mongoose.Schema({
         enum: ["customer", "admin"],
         default: "customer",
     },
-
+    phone: {
+    type: String,
+    },
+    billingAddress: {
+        street: { type: String },
+        city: { type: String },
+        state: { type: String },
+        country: { type: String },
+        postal_code: { type: String }
+    },
+    sex: {
+        type: String,
+        enum: ["male", "female", "non-binary"]
+    },
+    image: {
+        type: String
+    },
+    dob: {
+         type: Date,
+    },
 },
 
 {

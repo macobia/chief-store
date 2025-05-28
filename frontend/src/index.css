@@ -1,16 +1,13 @@
-@import "tailwindcss";
-
+@import 'tailwindcss';
 
 .web-title {
-    font-family: "Underdog", system-ui;
-    font-weight: 400;
-    font-style: normal;
-  }
-  body {
-    font-family: "Playfair Display", serif;
-    
-  }
-  a {
-    cursor: pointer;
-  }
-  
+  font-family: 'Underdog', system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+body {
+  font-family: 'Playfair Display', serif;
+}
+a {
+  cursor: pointer;
+}

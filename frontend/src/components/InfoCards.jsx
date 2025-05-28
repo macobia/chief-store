@@ -1,5 +1,5 @@
-import React from "react";
-import { GlobeAltIcon, TagIcon } from "@heroicons/react/24/solid";
+import React from 'react';
+import { GlobeAltIcon, TagIcon } from '@heroicons/react/24/solid';
 
 function InfoCards() {
   return (
@@ -13,8 +13,12 @@ function InfoCards() {
           className="w-12 h-12"
         />
         <div>
-          <h2 className="text-lg font-semibold mb-2 text-white">Powered by Flutterwave</h2>
-          <p className="text-emerald-300 font-medium mb-4">Safe and secure payment</p>
+          <h2 className="text-lg font-semibold mb-2 text-white">
+            Powered by Flutterwave
+          </h2>
+          <p className="text-emerald-300 font-medium mb-4">
+            Safe and secure payment
+          </p>
         </div>
       </div>
 
@@ -23,7 +27,9 @@ function InfoCards() {
         <GlobeAltIcon className="w-12 h-12 text-blue-500" />
         <div>
           <h2 className="text-xl font-semibold">Worldwide Delivery</h2>
-          <p className="text-emerald-300 font-medium mb-4">Fast, safe, and tracked</p>
+          <p className="text-emerald-300 font-medium mb-4">
+            Fast, safe, and tracked
+          </p>
         </div>
       </div>
 
@@ -32,7 +38,9 @@ function InfoCards() {
         <TagIcon className="w-12 h-12 text-green-500" />
         <div>
           <h2 className="text-xl font-semibold">10% Discount on Purchase</h2>
-          <p className="text-emerald-300 font-medium mb-4">Discount applied on eligible products</p>
+          <p className="text-emerald-300 font-medium mb-4">
+            Discount applied on eligible products
+          </p>
         </div>
       </div>
     </div>

@@ -47,7 +47,8 @@ const orderSchema = new mongoose.Schema({
         state: String,
         country: String,
         postal_code: String
-    }
+    }, 
+ 
     // OpaySessionId:{
     //     type: String,
     //     unique: true,

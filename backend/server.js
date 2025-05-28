@@ -15,9 +15,11 @@ import couponRoutes from "./routes/coupon.route.js";
 import paymentRoutes from "./routes/payment.route.js";
 import analyticsRoutes from "./routes/analytics.route.js"
 import orderRoutes from "./routes/order.routes.js";
+import UserManagementRoutes from "./routes/userManagement.route.js";
 import cors from "cors";
 
 import { connectDB } from "./lib/db.js";
+
 
 dotenv.config();
 
@@ -45,6 +47,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/userManagement", UserManagementRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
