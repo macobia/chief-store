@@ -4,6 +4,7 @@ import {
   BarChart,
   Settings as SettingsIcon,
 } from 'lucide-react';
+// eslint-disable-next-line
 import { motion } from 'framer-motion';
 import OrderTracking from '../components/OrderTracking';
 import PurchaseSummary from '../components/PurchaseSummary';
