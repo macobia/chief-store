@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage.jsx';
 import CartPage from './pages/CartPage';
+import ItemPage from './pages/ItemPage';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -15,13 +16,6 @@ import { useCartStore } from './stores/useCartStore.js';
 import PurchaseSuccessPage from './pages/PurchaseSuccessPage';
 import AdminPage from './pages/AdminPage';
 
-// import ResetPassPage from './pages/ResetPassPage.jsx'
-// import useTokenStore from './stores/useTokenStore.js'
-// import CategoryPage from './pages/CategoryPage.jsx';
-// import ForgotPassPage from './pages/ForgotPassPage.jsx'
-// import SignUpPage from './pages/SignUpPage'
-// import LoginPage from './pages/LoginPage'
-
 // used lazy loading for code splitting and better performance
 // const HomePage = React.lazy(() => import('./pages/HomePage.jsx'));
 const SignUpPage = React.lazy(() => import('./pages/SignUpPage.jsx'));
@@ -31,9 +25,12 @@ const ResetPassPage = React.lazy(() => import('./pages/ResetPassPage.jsx'));
 // const AdminPage = React.lazy(() => import('./pages/AdminPage.jsx'));
 const UserPage = React.lazy(() => import('./pages/UserPage.jsx'));
 const CategoryPage = React.lazy(() => import('./pages/CategoryPage.jsx'));
+const ProductPage = React.lazy(() => import('./pages/ProductPage.jsx'));
+
 function App() {
   // const token = useTokenStore((state) => state.token);
   const { user, checkAuth, checkingAuth } = useUserStore();
+
   const { getCartItems } = useCartStore();
 
   useEffect(() => {
@@ -72,7 +69,13 @@ function App() {
             {/* <Route path='/login' element={ <LoginPage/>}/> */}
             <Route
               path="/login"
-              element={!user ? <LoginPage /> : <Navigate to="/" />}
+              element={
+                !user ? (
+                  <LoginPage />
+                ) : (
+                  <Navigate to={user?.role ? '/secret-dashboard' : '/'} />
+                )
+              }
             />
             <Route
               path="/secret-dashboard"
@@ -100,6 +103,8 @@ function App() {
                 user ? <PurchaseSuccessPage /> : <Navigate to="/login" />
               }
             />
+            <Route path="/products" element={<ProductPage />} />
+            <Route path="/products/:id" element={<ItemPage />} />
 
             <Route path="/forgot-password" element={<ForgotPassPage />} />
             <Route

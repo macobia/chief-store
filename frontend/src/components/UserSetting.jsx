@@ -118,19 +118,31 @@ const UserSetting = () => {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          value={profile.name}
-          onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-          placeholder="Full Name"
-          className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-          required
-        />
-
+        {/* Name */}
         <div>
+          <label htmlFor="name" className="block text-white mb-1">
+            Full Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            value={profile.name}
+            onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+            placeholder="Full Name"
+            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+            required
+          />
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label htmlFor="phone" className="block text-white mb-1">
+            Phone Number
+          </label>
           <div className="flex items-center gap-2">
             <span className="text-white">+234</span>
             <input
+              id="phone"
               type="tel"
               value={profile.phone}
               onChange={(e) => handlePhoneChange(e.target.value)}
@@ -144,63 +156,117 @@ const UserSetting = () => {
           )}
         </div>
 
-        <select
-          value={profile.sex}
-          onChange={(e) => setProfile({ ...profile, sex: e.target.value })}
-          className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-        >
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="non-binary">Non-binary</option>
-        </select>
+        {/* Gender */}
+        <div>
+          <label htmlFor="sex" className="block text-white mb-1">
+            Gender
+          </label>
+          <select
+            id="sex"
+            value={profile.sex}
+            onChange={(e) => setProfile({ ...profile, sex: e.target.value })}
+            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+          >
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="non-binary">Non-binary</option>
+          </select>
+        </div>
 
-        <input
-          type="date"
-          value={profile.dob}
-          onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
-          max={new Date().toISOString().split('T')[0]} // This restricts selection to today or earlier
-          className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-          required
-        />
+        {/* Date of Birth */}
+        <div>
+          <label htmlFor="dob" className="block text-white mb-1">
+            Date of Birth
+          </label>
+          <input
+            id="dob"
+            type="date"
+            value={profile.dob ? profile.dob.split('T')[0] : ''}
+            onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
+            max={new Date().toISOString().split('T')[0]}
+            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+            required
+          />
+        </div>
+
         {/* Billing Address */}
-        <fieldset className="space-y-2">
-          <legend className="text-sm text-gray-300">Billing Address</legend>
-          <input
-            type="text"
-            placeholder="Street"
-            value={profile.billingAddress.street}
-            onChange={(e) => handleBillingChange('street', e.target.value)}
-            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-          />
-          <input
-            type="text"
-            placeholder="City"
-            value={profile.billingAddress.city}
-            onChange={(e) => handleBillingChange('city', e.target.value)}
-            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-          />
-          <input
-            type="text"
-            placeholder="State"
-            value={profile.billingAddress.state}
-            onChange={(e) => handleBillingChange('state', e.target.value)}
-            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-          />
-          <input
-            type="text"
-            placeholder="Country"
-            value={profile.billingAddress.country}
-            onChange={(e) => handleBillingChange('country', e.target.value)}
-            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-          />
-          <input
-            type="text"
-            placeholder="Postal Code"
-            value={profile.billingAddress.postal_code}
-            onChange={(e) => handleBillingChange('postal_code', e.target.value)}
-            className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
-          />
+        <fieldset className="space-y-2 border border-gray-600 rounded-md p-4">
+          <legend className="text-sm text-gray-300 mb-2">
+            Billing Address
+          </legend>
+
+          <div>
+            <label htmlFor="street" className="block text-white mb-1">
+              Street
+            </label>
+            <input
+              id="street"
+              type="text"
+              placeholder="Street"
+              value={profile.billingAddress.street}
+              onChange={(e) => handleBillingChange('street', e.target.value)}
+              className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="city" className="block text-white mb-1">
+              City
+            </label>
+            <input
+              id="city"
+              type="text"
+              placeholder="City"
+              value={profile.billingAddress.city}
+              onChange={(e) => handleBillingChange('city', e.target.value)}
+              className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="state" className="block text-white mb-1">
+              State
+            </label>
+            <input
+              id="state"
+              type="text"
+              placeholder="State"
+              value={profile.billingAddress.state}
+              onChange={(e) => handleBillingChange('state', e.target.value)}
+              className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="country" className="block text-white mb-1">
+              Country
+            </label>
+            <input
+              id="country"
+              type="text"
+              placeholder="Country"
+              value={profile.billingAddress.country}
+              onChange={(e) => handleBillingChange('country', e.target.value)}
+              className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="postal_code" className="block text-white mb-1">
+              Postal Code
+            </label>
+            <input
+              id="postal_code"
+              type="text"
+              placeholder="Postal Code"
+              value={profile.billingAddress.postal_code}
+              onChange={(e) =>
+                handleBillingChange('postal_code', e.target.value)
+              }
+              className="w-full bg-gray-700 text-white rounded-md px-3 py-2"
+            />
+          </div>
         </fieldset>
 
         {/* Upload Image */}
@@ -214,7 +280,7 @@ const UserSetting = () => {
           />
           <label
             htmlFor="imageUpload"
-            className="cursor-pointer bg-gray-700 py-2 px-3 rounded-md text-sm text-gray-300 hover:bg-gray-600"
+            className="cursor-pointer bg-gray-700 py-2 px-3 rounded-md text-sm text-gray-300 hover:bg-gray-600 flex items-center"
           >
             <Upload className="inline w-5 h-5 mr-1" />
             Upload Image
@@ -227,7 +293,7 @@ const UserSetting = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full flex justify-center items-center py-2 px-4 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+          className="w-full flex justify-center items-center py-2 px-4 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 cursor-pointer"
           disabled={loading}
         >
           {loading ? (

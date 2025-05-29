@@ -1,6 +1,8 @@
 import { redis } from "../lib/redis.js";
 import cloudinary from "../lib/cloudinary.js";
 import Product from "../models/product.model.js";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const getAllProducts = async (req, res) => {
 	try {
@@ -8,6 +10,57 @@ export const getAllProducts = async (req, res) => {
 		res.json({ products });
 	} catch (error) {
 		console.log("Error in getAllProducts controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
+
+export const getAllProductsByFilters = async (req, res) => {
+	try {
+		const {
+			page = 1,			limit = 10,
+			sort = 'newest',
+			search = '',
+			category,
+			color,
+			size,
+			priceMin,
+			priceMax,
+		} = req.query;
+
+		const filters = {};
+
+		if (search) {
+			filters.name = { $regex: search, $options: 'i' };
+		}
+		if (category) filters.category = category;
+		if (color) filters.color = color;
+		if (size) filters.size = size;
+		if (priceMin || priceMax) {
+			filters.price = {};
+			if (priceMin) filters.price.$gte = parseFloat(priceMin);
+			if (priceMax) filters.price.$lte = parseFloat(priceMax);
+		}
+
+		let sortOption = {};
+		if (sort === 'newest') sortOption = { createdAt: -1 };
+		else if (sort === 'oldest') sortOption = { createdAt: 1 };
+		else if (sort === 'price-asc') sortOption = { price: 1 };
+		else if (sort === 'price-desc') sortOption = { price: -1 };
+
+		const total = await Product.countDocuments(filters);
+		const products = await Product.find(filters)
+			.sort(sortOption)
+			.skip((page - 1) * limit)
+			.limit(Number(limit));
+
+		res.json({
+			products,
+			total,
+			page: Number(page),
+			pages: Math.ceil(total / limit),
+		});
+	} catch (error) {
+		console.error("Error in getAllProducts controller", error.message);
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
@@ -40,31 +93,86 @@ export const getFeaturedProducts = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-	try {
-		const { name, description, price, image, category } = req.body;
+  try {
+    const {
+      name,
+      description,
+      price,
+      image,
+      category,
+      sizes,
+      stock,
+      discountPrice,
+      tags,
+      variants,
+      status,
+      isFeatured,
+    } = req.body;
 
-		let cloudinaryResponse = null;
+    // Validate required fields
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !image ||
+      !category ||
+      !sizes ||
+      !Array.isArray(sizes) ||
+      sizes.length === 0 ||
+      stock === undefined
+    ) {
+      return res.status(400).json({ message: "Missing or invalid required fields" });
+    }
 
-		if (image) {
-			cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
-		}
+    // Validate size values
+    const validSizes = ['s', 'm', 'l', 'xl', 'xxl', 'xxxl'];
+    for (const size of sizes) {
+      if (!validSizes.includes(size)) {
+        return res.status(400).json({ message: `${size} is not a valid size` });
+      }
+    }
 
-		const product = await Product.create({
-			name,
-			description,
-			price,
-			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
-			category,
-		});
+    // Upload image to Cloudinary
+    let cloudinaryResponse = null;
+    if (image) {
+      cloudinaryResponse = await cloudinary.uploader.upload(image, {
+        folder: 'products',
+      });
+    }
 
-		res.status(201).json(product);
-	} catch (error) {
-		console.log("Error in createProduct controller", error.message);
-		res.status(500).json({ message: "Server error", error: error.message });
-	}
+    // Parse variants (optional)
+    const parsedVariants = Array.isArray(variants)
+      ? variants.map((v) => ({
+          size: v.size,
+          color: v.color,
+          stock: v.stock || 0,
+          image: v.image || '',
+        }))
+      : [];
+
+    // Create product
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      image: cloudinaryResponse?.secure_url || '',
+      category,
+      sizes,
+      stock,
+      discountPrice: discountPrice || 0,
+      tags: Array.isArray(tags) ? tags : [],
+      variants: parsedVariants,
+      status: status || 'active',
+      isFeatured: isFeatured || false,
+      sku: uuidv4(), // auto-generate SKU
+    });
+
+    res.status(201).json(product);
+  } catch (error) {
+    console.error("Error in createProduct controller:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 };
-
-//to get single product
 export const getSingleProduct = async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
@@ -190,6 +298,21 @@ export const toggleFeaturedProduct = async (req, res) => {
 		console.log("Error in toggleFeaturedProduct controller", error.message);
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
+};
+export const getProductsByCategory1 = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const excludeId = req.query.exclude;
+
+    const filter = { category };
+    if (excludeId) filter._id = { $ne: excludeId };
+
+    const products = await Product.find(filter).limit(6);
+    res.json(products);
+  } catch (error) {
+    console.error("Error fetching related products:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 async function updateFeaturedProductsCache() {

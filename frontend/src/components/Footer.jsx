@@ -7,6 +7,7 @@ import {
   FaYoutube,
 } from 'react-icons/fa';
 import PaymentMethods from './PaymentMethods';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -27,9 +28,9 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-3 text-white">Quick Links</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             <li>
-              <a href="/shop" className="hover:text-white">
+              <Link to="products" className="hover:text-white">
                 Shop
-              </a>
+              </Link>
             </li>
             <li>
               <a href="/about" className="hover:text-white">

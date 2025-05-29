@@ -6,8 +6,13 @@ export const useProductStore = create((set) => ({
   products: [],
   // product: null,
   loading: false,
+  currentPage: 1,
+  totalPages: 1, // Will hold the number of total pages
 
   setProducts: (products) => set({ products }),
+  setCurrentPage: (page) => set({ currentPage: page }),
+  setTotalPages: (totalPages) => set({ totalPages }),
+
   createProduct: async (productData) => {
     set({ loading: true });
     try {
@@ -20,6 +25,20 @@ export const useProductStore = create((set) => ({
     } catch (error) {
       toast.error(error.response.data.error);
       set({ loading: false });
+    }
+  },
+  fetchAllProductsForUsers: async (filters = {}) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get('/products/all', { params: filters });
+      set({
+        products: response.data.products,
+        totalPages: response.data.pages, // Set the totalPages from the response
+        loading: false,
+      });
+    } catch (error) {
+      set({ loading: false });
+      toast.error(error.response?.data?.error || 'Failed to fetch products');
     }
   },
   // New: Fetch a single product by ID

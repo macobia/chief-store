@@ -49,7 +49,7 @@ const Carousel = () => {
                 className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
                 onClick={handleShopClick}
               >
-                <Link to={'/cart'}>Shop Now</Link>
+                <Link to={'/products'}>Shop Now</Link>
               </button>
             </div>
           </div>
@@ -78,7 +78,7 @@ const Carousel = () => {
                 className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
                 onClick={handleShopClick}
               >
-                <Link to={'/cart'}>Shop Now</Link>
+                <Link to={'/products'}>Shop Now</Link>
               </button>
             </div>
           </div>
@@ -105,7 +105,7 @@ const Carousel = () => {
                 className="mt-4 px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full text-white font-semibold"
                 onClick={handleShopClick}
               >
-                <Link to={'/cart'}>Shop Now</Link>
+                <Link to={'/products'}>Shop Now</Link>
               </button>
             </div>
           </div>
