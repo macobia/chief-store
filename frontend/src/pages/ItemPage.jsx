@@ -31,7 +31,7 @@ const ItemPage = () => {
       try {
         const res = await axios.get(`/products/singles/${id}`);
         setProduct(res.data);
-        
+
       } catch (err) {
         console.error('Failed to fetch product', err);
       } finally {
@@ -133,10 +133,10 @@ const ItemPage = () => {
           {/* Price */}
           <div className="flex items-center gap-4">
             <p className="text-2xl font-bold text-emerald-400">
-              ${product.discountPrice || product.price}
+               ₦{product.discountPrice || product.price}
             </p>
             {product.discountPrice && (
-              <p className="line-through text-gray-400">${product.price}</p>
+              <p className="line-through text-gray-400"> ₦{product.price}</p>
             )}
           </div>
 
@@ -169,7 +169,7 @@ const ItemPage = () => {
                   />
                   <h3 className="text-lg font-bold mt-2">{product.name}</h3>
                   <p className="text-emerald-400 text-sm">
-                    ${product.discountPrice || product.price}
+                     ₦{product.discountPrice || product.price}
                   </p>
                 </div>
               </Link>
