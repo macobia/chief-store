@@ -29,6 +29,8 @@ dotenv.config();
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(express.json({ limit: '50mb' }));  // allows you to parse the body of the request
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173', // frontend URL
