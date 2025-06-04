@@ -40,12 +40,12 @@ const SignUpPage = () => {
       return;
     }
 
-    await signup(formData);
+    const result = await signup(formData);
     // Redirect to verification page
-    if (user){
-    window.location.href = `/verify-email?email=${formData.email}`;}
+    if (result.message === 'User was created successfully') {
+      window.location.href = `/verify-email?email=${formData.email}`;}
 
-  };
+    };
   return (
     <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <motion.div

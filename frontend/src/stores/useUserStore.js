@@ -31,8 +31,14 @@ export const useUserStore = create((set, get) => ({
         password,
         recaptchaToken,
       });
+      
       set({ loading: false }); //user: res.data.user,
       toast.success(res.data.message);
+       return {
+      success: true,
+      data: res.data,
+      message: res.data.message,
+    };
     } catch (error) {
       set({ loading: false });
       toast.error(error.response.data.error.message || 'Something went wrong');

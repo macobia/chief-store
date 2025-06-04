@@ -166,9 +166,9 @@ export const signup = async (req, res) => {
     });
   }
     // Respond to the user
-    res.status(201).json({
-      message: "User created successfully. Please verify your email.",
-    });
+    // res.status(201).json({
+    //   message: "User created successfully. Please verify your email.",
+    // });
     } catch (error) {
       console.log("error in signup", error)
     return res.status(500).json({
