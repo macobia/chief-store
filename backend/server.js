@@ -19,6 +19,8 @@ import analyticsRoutes from "./routes/analytics.route.js"
 import orderRoutes from "./routes/order.routes.js";
 import UserManagementRoutes from "./routes/userManagement.route.js";
 import cors from "cors";
+import MongoStore from "connect-mongo";
+
 
 import { connectDB } from "./lib/db.js";
 
@@ -47,6 +49,10 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "your-secret-key",
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: "sessions",
+  }),
   cookie: {
     secure: true, // set to true if you're using HTTPS
     httpOnly: true,
