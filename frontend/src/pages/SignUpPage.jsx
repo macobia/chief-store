@@ -31,7 +31,7 @@ const SignUpPage = () => {
 
   const recaptchaRef = useRef();
 
-  const { signup, loading } = useUserStore();
+  const { signup, loading, user} = useUserStore();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,7 +42,9 @@ const SignUpPage = () => {
 
     await signup(formData);
     // Redirect to verification page
-    window.location.href = `/verify-email?email=${formData.email}`;
+    if (user){
+    window.location.href = `/verify-email?email=${formData.email}`;}
+
   };
   return (
     <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">

@@ -122,8 +122,8 @@ const LoginPage = () => {
             <ReCAPTCHA
               ref={recaptchaRef}
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-              size="normal"
-              onChange={(token) => setRecaptchaToken({ recaptchaToken: token })}
+              onChange={(token) => setRecaptchaToken(token)}
+
             />
 
             <button
