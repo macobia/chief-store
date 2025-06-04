@@ -4,10 +4,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import session from "express-session";
+import passport from "passport";
 // import path from "path";
 // import fs from 'fs';
 
-
+import "./lib/passport.js"
 import authRoutes from "./routes/auth.route.js";
 import productRoutes from "./routes/product.route.js";
 import cartRoutes from "./routes/cart.route.js";
@@ -39,6 +41,22 @@ const port = process.env.PORT || 3000
 // app.use(express.urlencoded({ extended: true })); //used during api testing instead of json 
 app.use(express.json());
 app.use(cookieParser());
+
+//session setup 
+app.use(session({
+  secret: process.env.SESSION_SECRET || "your-secret-key",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: true, // set to true if you're using HTTPS
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+  },
+}));
+
+// Initialize Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
@@ -90,7 +108,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// Export io to use elsewhere if needed
+// Export io to use 
 export { io };
 
 // Start the server

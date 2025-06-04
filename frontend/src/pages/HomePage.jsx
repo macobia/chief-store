@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+// import { useUserStore } from '../stores/useUserStore';
 import CategoryItem from '../components/CategoryItem';
 import { useProductStore } from '../stores/useProductStore';
 import FeaturedProducts from '../components/FeaturedProducts';
@@ -22,6 +23,10 @@ const HomePage = () => {
   useEffect(() => {
     fetchFeaturedProducts();
   }, [fetchFeaturedProducts]);
+
+  //   useEffect(() => {
+  //   useUserStore.getState().checkAuth(); // check login status after redirect from Google
+  // }, []);
 
   return (
     <div className="relative min-h-screen text-white overflow-hidden ">

@@ -8,7 +8,13 @@ export const useUserStore = create((set, get) => ({
   loading: false,
   checkingAuth: true,
 
-  signup: async ({ name, email, password, confirmPassword }) => {
+  signup: async ({
+    name,
+    email,
+    password,
+    confirmPassword,
+    recaptchaToken,
+  }) => {
     set({ loading: true });
     if (password.length < 6) {
       toast.error('Password should be at least 6 characters long');
@@ -19,19 +25,28 @@ export const useUserStore = create((set, get) => ({
       return set({ loading: false });
     }
     try {
-      const res = await axios.post('/auth/signup', { name, email, password });
-      set({ user: res.data.user, loading: false });
+      const res = await axios.post('/auth/signup', {
+        name,
+        email,
+        password,
+        recaptchaToken,
+      });
+      set({ loading: false }); //user: res.data.user,
       toast.success(res.data.message);
     } catch (error) {
       set({ loading: false });
       toast.error(error.response.data.error.message || 'Something went wrong');
     }
   },
-  login: async (email, password) => {
+  login: async (email, password, recaptchaToken) => {
     set({ loading: true });
 
     try {
-      const res = await axios.post('/auth/login', { email, password });
+      const res = await axios.post('/auth/login', {
+        email,
+        password,
+        recaptchaToken,
+      });
       // console.log("user", res.data.user);
       set({ user: res.data.user, loading: false });
       toast.success(`Welcome ${res.data.user.name}`);
@@ -44,6 +59,34 @@ export const useUserStore = create((set, get) => ({
       set({ loading: false });
       console.log('error', error);
       toast.error(error.response.data.error.message || 'Something went wrong');
+    }
+  },
+
+  // Add a new method for email verification
+  verifyEmail: async (email, verificationCode) => {
+    set({ loading: true });
+    try {
+      const res = await axios.post('/auth/verifyEmail', {
+        email,
+        verificationCode,
+      });
+      set({ user: res.data.user, loading: false });
+      toast.success(res.data.message || 'Email verification successful');
+    } catch (error) {
+      set({ loading: false });
+      toast.error(error.message || 'Verification failed');
+    }
+  },
+  resendVerificationCode: async (email) => {
+    set({ loading: true });
+
+    try {
+      const res = await axios.post('/auth/resend-verify-email', { email });
+      set({ loading: false });
+      toast.success(res.data.message);
+    } catch (error) {
+      set({ loading: false });
+      toast.error(error.response.data.message || 'Something went wrong');
     }
   },
 

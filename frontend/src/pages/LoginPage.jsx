@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useState } from 'react';
 // eslint-disable-next-line
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
+import toast from 'react-hot-toast';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 import {
   LogIn,
   Mail,
@@ -17,14 +20,21 @@ import { useUserStore } from '../stores/useUserStore';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState('');
   const { login, loading } = useUserStore();
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const recaptchaRef = useRef();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(import.meta.env.MODE)
     // console.log(email, password);
-    login(email, password);
+    if (!recaptchaToken) {
+      toast.error('Please complete the reCAPTCHA');
+      return;
+    }
+    await login(email, password, recaptchaToken);
   };
   return (
     <div>
@@ -109,6 +119,12 @@ const LoginPage = () => {
                 </button>
               </div>
             </div>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              size="normal"
+              onChange={(token) => setRecaptchaToken({ recaptchaToken: token })}
+            />
 
             <button
               type="submit"
@@ -155,6 +171,14 @@ const LoginPage = () => {
               Forgot password? <ArrowRight className="inline h-4 w-4" />
             </Link>
           </p>
+        </div>
+
+        <div className="max-w-md mx-auto p-4 space-y-4">
+          <div className="flex justify-center">
+            <p className="text-center text-center text-sm text-gray-400">or</p>
+          </div>
+
+          <GoogleLoginButton page="login" />
         </div>
       </motion.div>
     </div>

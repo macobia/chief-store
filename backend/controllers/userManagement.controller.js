@@ -51,11 +51,11 @@ export const getAllUsersWithStats = async (req, res) => {
     name: user.name,
     email: user.email,
     role: user.role,
-    age: calculateAge(user.dob), // ✅ Include age
+    age: calculateAge(user.dob),
     monthlyStats: monthlyOrders || { totalSpent: 0, totalProducts: 0 },
     netStats: netOrders || { totalSpent: 0, totalProducts: 0 },
   };
-}));
+  }));
 
     res.status(200).json(results);
   } catch (err) {

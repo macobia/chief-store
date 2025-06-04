@@ -22,6 +22,7 @@ const SignUpPage = React.lazy(() => import('./pages/SignUpPage.jsx'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage.jsx'));
 const ForgotPassPage = React.lazy(() => import('./pages/ForgotPassPage.jsx'));
 const ResetPassPage = React.lazy(() => import('./pages/ResetPassPage.jsx'));
+const VerifyEmailPage = React.lazy(() => import('./pages/VerifyEmailPage.jsx'));
 // const AdminPage = React.lazy(() => import('./pages/AdminPage.jsx'));
 const UserPage = React.lazy(() => import('./pages/UserPage.jsx'));
 const CategoryPage = React.lazy(() => import('./pages/CategoryPage.jsx'));
@@ -65,6 +66,10 @@ function App() {
             <Route
               path="/signup"
               element={!user ? <SignUpPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/verify-email"
+              element={!user ? <VerifyEmailPage /> : <Navigate to="/" />}
             />
             {/* <Route path='/login' element={ <LoginPage/>}/> */}
             <Route

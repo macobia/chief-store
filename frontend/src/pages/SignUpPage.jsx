@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 import {
   UserPlus,
   Mail,
@@ -14,6 +16,7 @@ import {
 // eslint-disable-next-line
 import { motion } from 'framer-motion'; //used for animation
 import { useUserStore } from '../stores/useUserStore'; //used for storing user data and Zutand is used for state management instead of redux
+import toast from 'react-hot-toast';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -21,14 +24,25 @@ const SignUpPage = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    recaptchaToken: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const recaptchaRef = useRef();
+
   const { signup, loading } = useUserStore();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    signup(formData);
+
+    if (!formData.recaptchaToken) {
+      toast.error('Please complete the reCAPTCHA');
+      return;
+    }
+
+    await signup(formData);
+    // Redirect to verification page
+    window.location.href = `/verify-email?email=${formData.email}`;
   };
   return (
     <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -124,7 +138,7 @@ const SignUpPage = () => {
                     setFormData({ ...formData, password: e.target.value })
                   }
                   className="block w-full px-3 py-2 pl-10 pr-10 bg-gray-700 border border-gray-600 
-    rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                    rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
                   placeholder="••••••••"
                 />
                 <div
@@ -179,6 +193,14 @@ const SignUpPage = () => {
               </div>
             </div>
 
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={(token) =>
+                setFormData({ ...formData, recaptchaToken: token })
+              }
+            />
+
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent 
@@ -216,6 +238,13 @@ const SignUpPage = () => {
               Login here <ArrowRight className="inline h-4 w-4" />
             </Link>
           </p>
+        </div>
+        <div className="max-w-md mx-auto p-4 space-y-4">
+          <div className="flex justify-center">
+            <p className="text-center text-center text-sm text-gray-400">or</p>
+          </div>
+
+          <GoogleLoginButton page="signup" />
         </div>
       </motion.div>
     </div>
