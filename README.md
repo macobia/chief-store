@@ -138,14 +138,14 @@ VITE_RECAPTCHA_SITE_KEY=your_RECAPTCHA_SITE_KEY
 #### 🖥️ Backend
 
 ```bash
-cd server
+cd backend
 npm install
 ```
 
 #### 🌐 Frontend
 
 ```bash
-cd ../client
+cd ../frontend
 npm install
 ```
 
@@ -162,7 +162,7 @@ npm run dev
 #### 🖼️ Start Frontend
 
 ```bash
-cd ../client
+cd ../frontend
 npm run dev
 ```
 
