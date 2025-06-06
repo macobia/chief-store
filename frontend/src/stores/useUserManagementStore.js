@@ -20,10 +20,10 @@ export const useUserManagementStore = create((set) => ({
     } catch (error) {
       set({
         loading: false,
-        error: error.response?.data?.message || 'Failed to fetch users stats',
+        error: error.response?.data?.message || error.response?.data?.message || 'Failed to fetch users stats',
       });
       toast.error(
-        error.response?.data?.message || 'Failed to fetch users stats'
+        error.response?.data?.message || error.response?.data?.message || 'Failed to fetch users stats'
       );
     }
   },
@@ -44,9 +44,9 @@ export const useUserManagementStore = create((set) => ({
     } catch (error) {
       set({
         loading: false,
-        error: error.response?.data?.error?.message || 'Failed to delete user',
+        error: error.response?.data?.error?.message || error.response?.data?.message || 'Failed to delete user',
       });
-      toast.error(error.response?.data?.error?.message || 'Failed to delete user');
+      toast.error(error.response?.data?.error?.message || error.response?.data?.message || 'Failed to delete user');
     }
   },
 
