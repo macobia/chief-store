@@ -204,6 +204,11 @@ export const verifyEmail = async (req, res) => {
     user.verificationCodeExpiry = undefined;
     await user.save();
 
+    if (!user.isEmailVerified) {
+        return res.status(403).json({ message: "Please verify your email to continue." });
+      }
+
+
     // Generate and store refresh token
     const { accessToken, refreshToken } = generateToken(user._id);
     await storeRefreshToken(user._id, refreshToken);
@@ -326,6 +331,10 @@ export const login = async (req, res) => {
        
         });
         // console.log("invalid credential ")
+      }
+
+      if (!user.isEmailVerified) {
+        return res.status(403).json({ message: "Please verify your email to continue." });
       }
 
       // Generate tokens
