@@ -70,15 +70,15 @@ export const deleteUser = async (req, res) => {
   const { userId } = req.params;
 
   if (req.user.role !== 'superAdmin') {
-    return res.status(403).json({ message: "Access denied. Super Admin only." });
+    return res.status(403).json({error:{ message: "Access denied. Super Admin only." }});
   }
 
   if (req.user.id === userId) {
-    return res.status(400).json({ message: "You cannot delete your own account." });
+    return res.status(400).json({error:{ message: "You cannot delete your own account." }});
   }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    return res.status(400).json({ message: "Invalid user ID" });
+    return res.status(400).json({error:{ message: "Invalid user ID" }});
   }
 
   try {
@@ -103,7 +103,7 @@ export const deleteUser = async (req, res) => {
     res.status(200).json({ message: `User ${user.email} deleted successfully.` });
   } catch (err) {
     console.error("Error deleting user:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({error:{ message: "Server error" }});
   }
 };
 
@@ -113,19 +113,19 @@ export const changeUserRole = async (req, res) => {
   const { role } = req.body;
 
   if ( req.user.role !== "superAdmin")  {
-    return res.status(403).json({ message: "Access denied. Super Admin only." });
+    return res.status(403).json({error:{message: "Access denied. Super Admin only." }});
   }
 
   if (req.user.id === userId) {
-    return res.status(400).json({ message: "You cannot change your own role." });
+      return res.status(400).json({error:{ message: "You cannot change your own role." }});
   }
 
   if (!["admin", "customer"].includes(role)) {
-    return res.status(400).json({ message: "Invalid role provided" });
+    return res.status(400).json({error:{ message: "Invalid role provided" }});
   }
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    return res.status(400).json({ message: "Invalid user ID" });
+    return res.status(400).json({error:{ message: "Invalid user ID" }});
   }
 
   try {
@@ -136,7 +136,7 @@ export const changeUserRole = async (req, res) => {
     res.status(200).json({ message: `User role updated to ${role}`, user });
   } catch (err) {
     console.error("Error updating role:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({error:{ message: "Server error" }});
   }
 };
 

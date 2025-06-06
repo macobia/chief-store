@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import toast from 'react-hot-toast';
 import axios from '../lib/axios';
 
-export const useUserManagementStore = create((set, get) => ({
+export const useUserManagementStore = create((set) => ({
   users: [], // For admin: list of users if needed
   userStats: null, // For stats of a specific user
   userOrders: [], // For tracking orders of a user
@@ -44,9 +44,9 @@ export const useUserManagementStore = create((set, get) => ({
     } catch (error) {
       set({
         loading: false,
-        error: error.response?.data?.message || 'Failed to delete user',
+        error: error.response.data.message || 'Failed to delete user',
       });
-      toast.error(error.response?.data?.message || 'Failed to delete user');
+      toast.error(error.response.data.message|| 'Failed to delete user');
     }
   },
 
@@ -67,10 +67,10 @@ export const useUserManagementStore = create((set, get) => ({
     } catch (error) {
       set({
         loading: false,
-        error: error.response?.data?.message || 'Failed to update user role',
+        error: error.response.data.message || 'Failed to update user role',
       });
       toast.error(
-        error.response?.data?.message || 'Failed to update user role'
+        error.response.data.message || 'Failed to update user role'
       );
     }
   },
@@ -84,9 +84,9 @@ export const useUserManagementStore = create((set, get) => ({
     } catch (error) {
       set({
         loading: false,
-        error: error.response?.data?.message || 'Failed to fetch orders',
+        error: error.res?.data?.message || 'Failed to fetch orders',
       });
-      toast.error(error.response?.data?.message || 'Failed to fetch orders');
+      toast.error(error.res?.data?.message || 'Failed to fetch orders');
     }
   },
 
