@@ -205,7 +205,7 @@ export const verifyEmail = async (req, res) => {
     await user.save();
 
     if (!user.isEmailVerified) {
-        return res.status(403).json({ message: "Please verify your email to continue." });
+        return res.status(403).json({ error: { message: "Please verify your email to continue." }});
       }
 
 
@@ -334,7 +334,8 @@ export const login = async (req, res) => {
       }
 
       if (!user.isEmailVerified) {
-        return res.status(403).json({ message: "Please verify your email to continue." });
+        return res.status(403).json({ error: { message: "Please verify your email to continue." }});
+        
       }
 
       // Generate tokens
