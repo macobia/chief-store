@@ -44,9 +44,9 @@ export const useUserManagementStore = create((set) => ({
     } catch (error) {
       set({
         loading: false,
-        error: error.response.data.message || 'Failed to delete user',
+        error: error.response?.data?.error?.message || 'Failed to delete user',
       });
-      toast.error(error.response.data.message|| 'Failed to delete user');
+      toast.error(error.response?.data?.error?.message || 'Failed to delete user');
     }
   },
 
@@ -67,10 +67,10 @@ export const useUserManagementStore = create((set) => ({
     } catch (error) {
       set({
         loading: false,
-        error: error.response.data.message || 'Failed to update user role',
+        error: error.response?.data?.error?.message || 'Failed to update user role',
       });
       toast.error(
-        error.response.data.message || 'Failed to update user role'
+        error.response?.data?.error?.message|| 'Failed to update user role'
       );
     }
   },
