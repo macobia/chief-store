@@ -13,7 +13,7 @@ import { useCartStore } from '../stores/useCartStore';
 
 const Navbar = () => {
   const { user, logout } = useUserStore();
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = (user?.role === 'admin' || user?.role === 'superAdmin');
   const userName = user?.name;
   const navigate = useNavigate();
   const { cart } = useCartStore();

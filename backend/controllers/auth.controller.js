@@ -369,14 +369,14 @@ export const googleCallback = async (req, res) => {
   try {
       const user = req.user;
         if (!user) {
-        return res.status(401).json({ message: "Google authentication failed" });
+        return res.status(401).json({error:{ message: "Google authentication failed" }});
         }
-      // Redirect to frontend
+      // Redirect to frontend and generate token
       const { accessToken, refreshToken } = generateToken(user._id);
       await storeRefreshToken(user._id, refreshToken);
       setCookies(res, accessToken, refreshToken);
 
-      if (user.role === 'admin'){
+      if (user.role === 'admin' || user.role === "superAdmin"){
         res.redirect(`${process.env.CLIENT_URL}/secret-dashboard`);
       } else {
          res.redirect(`${process.env.CLIENT_URL}/`);
@@ -385,7 +385,7 @@ export const googleCallback = async (req, res) => {
       
   } catch (error) {
         console.error("Google callback error:", error.message);
-        res.status(500).json({ message: "Server error during Google auth" });
+        res.status(500).json({ error: { message: "Server error during Google auth" }});
     
   }
 }
@@ -436,9 +436,9 @@ export const refreshToken = async (req, res) => {
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET_REFRESH_TOKEN);
     const storedToken = await redis.get(`refreshToken:${decoded.userId}`);
     if (storedToken !== refreshToken) {
-      return res.status(401).json({
+      return res.status(401).json({error:{
         message: "Unauthorized, Invalid refresh Token provided",
-      })
+      }})
 
     }
     const accessToken = jwt.sign({ userId: decoded.userId }, process.env.JWT_SECRET_ACCESS_TOKEN, {
@@ -559,7 +559,7 @@ export const getProfile = async (req, res) => {
     res.json(req.user);
   } catch (error) {
     console.log("Error in getProfile controller", error.message);
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({error:{ message: "Server error", error: error.message }});
   }
 }
 // a@gmail.com

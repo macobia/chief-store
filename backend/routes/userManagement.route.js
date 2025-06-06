@@ -1,6 +1,6 @@
 import express from "express";
 import { deleteUser, changeUserRole, trackUserOrders, getUserPurchaseHistory, getUserProfile, updateUserProfile, getAllUsersWithStats} from "../controllers/userManagement.controller.js";
-import { adminRoute, protectRoute } from "../middleware/auth.middleware.js";
+import { adminRoute, protectRoute, superAdminRoute } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -9,8 +9,8 @@ const router = express.Router();
 //For Admin
 
 router.get("/admin/users-with-stats", protectRoute, adminRoute, getAllUsersWithStats);
-router.delete("/admin/users/:userId",  protectRoute, adminRoute, deleteUser);
-router.patch("/admin/users/:userId/role",  protectRoute, adminRoute, changeUserRole);
+router.delete("/admin/users/:userId",  protectRoute, superAdminRoute, deleteUser);
+router.patch("/admin/users/:userId/role",  protectRoute, superAdminRoute, changeUserRole);
 
 
 // ------------------------ User Routes ------------------------

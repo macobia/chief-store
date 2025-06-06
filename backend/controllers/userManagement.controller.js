@@ -8,7 +8,7 @@ export const getAllUsersWithStats = async (req, res) => {
 
  
   try {
-     if (req.user.role !== "admin") {
+     if (req.user.role !== "admin" && req.user.role !== "superAdmin") {
     return res.status(403).json({ message: "Access denied" });
   }
 
@@ -69,8 +69,8 @@ export const getAllUsersWithStats = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const { userId } = req.params;
 
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: "Access denied. Admins only." });
+  if (req.user.role !== 'superAdmin') {
+    return res.status(403).json({ message: "Access denied. Super Admin only." });
   }
 
   if (req.user.id === userId) {
@@ -90,7 +90,7 @@ export const deleteUser = async (req, res) => {
     if (user.image) {
       const publicId = user.image.split("/").pop().split(".")[0];
       try {
-        await cloudinary.uploader.destroy(`users/${publicId}`);
+        await cloudinary.uploader.destroy(`user_profiles/${publicId}`);
         console.log("Deleted user image from Cloudinary");
       } catch (error) {
         console.log("Error deleting image from Cloudinary:", error);
@@ -112,8 +112,8 @@ export const changeUserRole = async (req, res) => {
   const { userId } = req.params;
   const { role } = req.body;
 
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ message: "Access denied. Admins only." });
+  if ( req.user.role !== "superAdmin")  {
+    return res.status(403).json({ message: "Access denied. Super Admin only." });
   }
 
   if (req.user.id === userId) {

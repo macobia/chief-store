@@ -29,7 +29,7 @@ dotenv.config();
 
 const app = express();
 
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); 
 
 app.use(express.json({ limit: '50mb' }));  // allows you to parse the body of the request
 app.use(cors({
@@ -56,7 +56,7 @@ app.use(session({
     collectionName: "sessions",
   }),
   cookie: {
-    secure: true, // set to true if you're using HTTPS
+    secure: true, // set to true for using HTTPS
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24, // 1 day
   },
@@ -67,7 +67,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);

@@ -1,4 +1,4 @@
-// middleware/rateLimiter.js
+
 import rateLimit from 'express-rate-limit';
 
 // Limit login attempts: 5 requests per 15 minutes per IP

@@ -175,7 +175,7 @@ const LoginPage = () => {
 
         <div className="max-w-md mx-auto p-4 space-y-4">
           <div className="flex justify-center">
-            <p className="text-center text-center text-sm text-gray-400">or</p>
+            <p className="text-center  text-sm text-gray-400">or</p>
           </div>
 
           <GoogleLoginButton page="login" />

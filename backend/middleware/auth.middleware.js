@@ -34,7 +34,7 @@ export const protectRoute = async (req, res, next) => {
 
 export const adminRoute = async (req, res, next) => {
     try {
-        if (req.user && req.user.role === "admin"){
+        if (req.user && (req.user.role === "admin" || req.user.role === "superAdmin")){
             next();
         } else {
             return res.status(403).json({error: {message: "Unauthorized, Admin only"}});
@@ -42,5 +42,18 @@ export const adminRoute = async (req, res, next) => {
         }
     } catch (error) {
         res.status(500).json({error: {message: "Server error in adminRoute middleware"}});
+    }
+}
+
+ export const superAdminRoute = async (req, res, next) => {
+    try {
+        if (req.user && req.user.role === "superAdmin" ){
+            next();
+        } else {
+            return res.status(403).json({error: {message: "Unauthorized, Super Admin only"}});
+
+        }
+    } catch (error) {
+        res.status(500).json({error: {message: "Server error in superAdminRoute middleware"}});
     }
 }
